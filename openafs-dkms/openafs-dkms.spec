@@ -22,14 +22,15 @@
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
 Version:        1.6.20.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
-Source1:        dkms-openafs.service
-Source2:        dkms-openafs-rhelcleaner
-Source3:        dkms-openafs
+# Lets get rid of the service because its not helping much.
+#Source1:        dkms-openafs.service
+#Source2:        dkms-openafs-rhelcleaner
+#Source3:        dkms-openafs
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
 %if 0%{?rhel} == 7
@@ -84,81 +85,87 @@ EOF
 # Fedora does not have "weak-updates" dir problem so these workarounds are RHEL only...
 
 # Upstart init script (rhel 6 only, no fedora)
-%if 0%{?rhel} == 6
-mkdir -p $RPM_BUILD_ROOT/%{_initddir}/
-install -D -m755 %{SOURCE3} $RPM_BUILD_ROOT/%{_initddir}/
-%endif
+#%if 0%{?rhel} == 6
+#mkdir -p $RPM_BUILD_ROOT/%{_initddir}/
+#install -D -m755 %{SOURCE3} $RPM_BUILD_ROOT/%{_initddir}/
+#%endif
 
 # systemd unit file (rhel 7+ only, no fedora)
-mkdir -p $RPM_BUILD_ROOT/%{_unitdir}/
-%if 0%{?rhel} > 6
-install -D -m644 %{SOURCE1} $RPM_BUILD_ROOT/%{_unitdir}/
-%endif
+#mkdir -p $RPM_BUILD_ROOT/%{_unitdir}/
+#%if 0%{?rhel} > 6
+#install -D -m644 %{SOURCE1} $RPM_BUILD_ROOT/%{_unitdir}/
+#%endif
 
 # actual clean up script and also another copy to be daily cron job (all RHEL only, no fedora)
-%if 0%{?rhel:1}
-mkdir -p $RPM_BUILD_ROOT/%{_libexecdir}/dkms-openafs-rhelcleaner/
-install -D -m755 %{SOURCE2} $RPM_BUILD_ROOT/%{_libexecdir}/dkms-openafs-rhelcleaner/
-mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/
-install -D -m755 %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/
-%endif
+#%if 0%{?rhel:1}
+#mkdir -p $RPM_BUILD_ROOT/%{_libexecdir}/dkms-openafs-rhelcleaner/
+#install -D -m755 %{SOURCE2} $RPM_BUILD_ROOT/%{_libexecdir}/dkms-openafs-rhelcleaner/
+#mkdir -p $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/
+#install -D -m755 %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/cron.daily/
+#%endif
 
 
 %post
-%if 0%{?rhel} == 6
-if [ $1 -eq 1 ] ; then
-/sbin/chkconfig --add dkms-openafs >/dev/null 2>&1 || :
-/sbin/chkconfig --level 2345 dkms-openafs on >/dev/null 2>&1 || :
-/sbin/service dkms-openafs start >/dev/null 2>&1 || :
-fi
-%endif
-%if 0%{?rhel} >= 7
-if [ $1 -eq 1 ] ; then
-/bin/systemctl daemon-reload >/dev/null 2>&1 || :
-/bin/systemctl enable dkms-openafs.service >/dev/null 2>&1 || :
-/bin/systemctl start dkms-openafs.service >/dev/null 2>&1 || :
-fi
-%endif
+#%if 0%{?rhel} == 6
+#if [ $1 -eq 1 ] ; then
+#/sbin/chkconfig --add dkms-openafs >/dev/null 2>&1 || :
+#/sbin/chkconfig --level 2345 dkms-openafs on >/dev/null 2>&1 || :
+#/sbin/service dkms-openafs start >/dev/null 2>&1 || :
+#fi
+#%endif
+#%if 0%{?rhel} >= 7
+#if [ $1 -eq 1 ] ; then
+#/bin/systemctl daemon-reload >/dev/null 2>&1 || :
+#/bin/systemctl enable dkms-openafs.service >/dev/null 2>&1 || :
+#/bin/systemctl start dkms-openafs.service >/dev/null 2>&1 || :
+#fi
+#%endif
 
 dkms add -m %{module} -v %{version} --rpm_safe_upgrade
 dkms build -m %{module} -v %{version} --rpm_safe_upgrade
 dkms install -m %{module} -v %{version} --rpm_safe_upgrade
 
 %preun
-%if 0%{?rhel} == 6
-if [ $1 -eq 0 ] ; then
-/sbin/service dkms-openafs stop >/dev/null 2>&1 || :
-/sbin/chkconfig --level 2345 dkms-openafs off >/dev/null 2>&1 || :
-/sbin/chkconfig --del dkms-openafs >/dev/null 2>&1 || :
-fi
-%endif
-%if 0%{?rhel} >= 7
-%systemd_preun dkms-openafs.service
-%endif
+#%if 0%{?rhel} == 6
+#if [ $1 -eq 0 ] ; then
+#/sbin/service dkms-openafs stop >/dev/null 2>&1 || :
+#/sbin/chkconfig --level 2345 dkms-openafs off >/dev/null 2>&1 || :
+#/sbin/chkconfig --del dkms-openafs >/dev/null 2>&1 || :
+#fi
+#%endif
+#%if 0%{?rhel} >= 7
+#%systemd_preun dkms-openafs.service
+#%endif
+
 dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all ||:
 
 %postun
-%if 0%{?rhel} >= 7
-%systemd_postun_with_restart dkms-openafs.service
-%endif
+#%if 0%{?rhel} >= 7
+#%systemd_postun_with_restart dkms-openafs.service
+#%endif
 
 %files
 %defattr(-, root, root)
 %{_prefix}/src/%{module}-%{version}
-%if 0%{?rhel} == 6
-%{_initddir}/dkms-openafs
-%endif
-%if 0%{?rhel} > 6
-%{_unitdir}/dkms-openafs.service
-%endif
-%if 0%{?rhel:1}
-%{_libexecdir}/dkms-openafs-rhelcleaner/dkms-openafs-rhelcleaner
-%{_sysconfdir}/cron.daily/dkms-openafs-rhelcleaner
-%endif
+
+#%if 0%{?rhel} == 6
+#%{_initddir}/dkms-openafs
+#%endif
+#%if 0%{?rhel} > 6
+#%{_unitdir}/dkms-openafs.service
+#%endif
+#%if 0%{?rhel:1}
+#%{_libexecdir}/dkms-openafs-rhelcleaner/dkms-openafs-rhelcleaner
+#%{_sysconfdir}/cron.daily/dkms-openafs-rhelcleaner
+#%endif
 
 
 
 %changelog
+* Tue Mar 14 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-2
+- remove all services and unit files. Its not the best way to fix the 
+  problem of superfluous initramfs files from /boot. Lets try something else.
+
 * Thu Dec 29 2016 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-1
 - Update to 1.6.20.1
 - fix for dkms-openafs-rhelcleaner running under RHEL 6.
