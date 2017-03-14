@@ -79,16 +79,27 @@ AUTOINSTALL=yes
 EOF
 
 %post
+for POSTINST in /usr/lib/dkms/common.postinst; do
+    if [ -f $POSTINST ]; then
+        $POSTINST %{module} %{version}
+        exit $?
+    fi
+    echo "WARNING: $POSTINST does not exist."
+done
+echo -e "ERROR: DKMS version is too old and %{module} was not"
+echo -e "built with legacy DKMS support."
+echo -e "You must either rebuild %{module} with legacy postinst"
+echo -e "support or upgrade DKMS to a more current version."
+exit 1
 
-
-dkms add -m %{module} -v %{version} --rpm_safe_upgrade
-dkms build -m %{module} -v %{version} --rpm_safe_upgrade
-dkms install -m %{module} -v %{version} --rpm_safe_upgrade
+#dkms add -m %{module} -v %{version} --rpm_safe_upgrade
+#dkms build -m %{module} -v %{version} --rpm_safe_upgrade
+#dkms install -m %{module} -v %{version} --rpm_safe_upgrade
 
 %preun
-
+echo -e "Uninstall of %{module} module (version %{version}) beginning:"
 dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all ||:
-
+exit 0
 %postun
 
 %files
@@ -100,6 +111,7 @@ dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all ||:
 * Tue Mar 14 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-2
 - remove all services and unit files. Its not the best way to fix the 
   problem of superfluous initramfs files from /boot. Lets try something else.
+- Test building in post using method from zfs-dkms.spec...
 
 * Thu Dec 29 2016 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-1
 - Update to 1.6.20.1
