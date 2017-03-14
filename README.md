@@ -33,3 +33,8 @@ to build for a specific distro. Like:
 make el7
 
 for centos 7 for example.
+
+The openafs-kmod package may only be built for centos or RHEL. To build it on
+fedora you would need many more mock configuration files to add the rpmfusion 
+yum repo to your build environment.
+
