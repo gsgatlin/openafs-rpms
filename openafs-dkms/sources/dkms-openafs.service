@@ -1,0 +1,11 @@
+[Unit]
+Description=Delete weak openafs modules
+After=multi-user.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/usr/libexec/dkms-openafs-rhelcleaner/dkms-openafs-rhelcleaner
+[Install]
+WantedBy=graphical.target
+

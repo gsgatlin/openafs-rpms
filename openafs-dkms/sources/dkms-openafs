@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# dkms-openafs for upstart
+#
+# chkconfig: 345 05 05
+# description: clean up "weak" symlinks and run dkms autoinstall
+#              to fix openafs back up.
+
+if [ "$1" = "stop" ]; then
+exit 0
+fi
+
+echo -n "Starting openafs-dkms: "
+
+/usr/libexec/dkms-openafs-rhelcleaner/dkms-openafs-rhelcleaner
+
+echo -en "\t\t\t\t   [  "
+echo -en "\\033[0;32m"
+echo -en "OK"
+echo -en "\\033[0;39m"
+echo -e "  ]"
+

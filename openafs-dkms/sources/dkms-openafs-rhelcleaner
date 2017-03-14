@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Work around a problem with "weak-updates/openafs.ko" symlinks.
+# For RHEL 5/6/7 only. Fedora does not need this.
+# gsgatlin 3/8/2016
+
+rundir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+croncheck=`echo $rundir | grep "cron."`
+
+for i in $(rpm -q --qf "%{version}-%{release}.%{arch} " kernel)
+do
+if [ "$croncheck" == "" ] ; then
+echo -n "."
+fi
+\rm -f /lib/modules/$i/weak-updates/openafs.ko > /dev/null 2>&1
+/usr/sbin/dkms autoinstall -k $i > /dev/null 2>&1
+done
+
+\rm -f  /lib/modules/*/weak-updates/openafs.ko > /dev/null 2>&1
+
+# we need to use some temporary files....
+\rm -rf /tmp/savedinitramfslist
+for i in $(rpm -q --qf "%{version}-%{release}.%{arch} " kernel)
+do
+
+echo "initramfs-$i.img" >> /tmp/savedinitramfslist
+
+done
+
+sort --output=/tmp/savedinitramfslist.sort /tmp/savedinitramfslist
+mv -f /tmp/savedinitramfslist.sort /tmp/savedinitramfslist
+
+\rm -rf /tmp/allinitramfslist
+
+cd /boot/
+
+ls initramfs-*.img | grep -v kdump | grep -v rescue >> /tmp/allinitramfslist
+
+deletelist=`comm -3 /tmp/allinitramfslist /tmp/savedinitramfslist`
+
+\rm -rf $deletelist
+
+\rm -rf /tmp/allinitramfslist
+\rm -rf /tmp/savedinitramfslist
+
