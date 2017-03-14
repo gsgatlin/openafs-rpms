@@ -1,0 +1,12 @@
+diff -up openafs-1.6.20.1/src/packaging/RedHat/openafs-client.service.cellservdbfix openafs-1.6.20.1/src/packaging/RedHat/openafs-client.service
+--- openafs-1.6.20.1/src/packaging/RedHat/openafs-client.service.cellservdbfix	2016-12-29 18:32:36.676997833 -0500
++++ openafs-1.6.20.1/src/packaging/RedHat/openafs-client.service	2016-12-29 18:34:42.414336578 -0500
+@@ -8,8 +8,6 @@ Before=remote-fs.target
+ Type=forking
+ RemainAfterExit=true
+ EnvironmentFile=/etc/sysconfig/openafs
+-ExecStartPre=/bin/sed -n 'w/usr/vice/etc/CellServDB' /usr/vice/etc/CellServDB.local /usr/vice/etc/CellServDB.dist
+-ExecStartPre=/bin/chmod 0644 /usr/vice/etc/CellServDB
+ ExecStartPre=/sbin/modprobe openafs
+ ExecStart=/usr/vice/etc/afsd $AFSD_ARGS
+ ExecStop=/bin/umount /afs

@@ -1,0 +1,28 @@
+From f894b6988496f305f9ec41a01e523b2c8632810c Mon Sep 17 00:00:00 2001
+From: Ken Dreyer <ktdreyer@ktdreyer.com>
+Date: Mon, 8 Oct 2012 20:55:50 -0600
+Subject: [PATCH 2/5] systemd: unload module "libafs"
+
+Load the module as "openafs", but unload it using the name "libafs".
+
+Change-Id: Ib7d3d9b80ff58e9cded9a3171a5b003f1995a5b7
+---
+ src/packaging/RedHat/openafs-client.service | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/packaging/RedHat/openafs-client.service b/src/packaging/RedHat/openafs-client.service
+index 2ee652a..a5fb287 100644
+--- a/src/packaging/RedHat/openafs-client.service
++++ b/src/packaging/RedHat/openafs-client.service
+@@ -9,7 +9,7 @@ ExecStartPre=/sbin/modprobe openafs
+ ExecStart=/usr/vice/etc/afsd $AFSD_ARGS
+ ExecStop=/bin/umount /afs
+ ExecStop=/usr/vice/etc/afsd -shutdown
+-ExecStop=/sbin/rmmod openafs
++ExecStop=/sbin/rmmod libafs
+ KillMode=none
+ 
+ [Install]
+-- 
+1.8.3.1
+

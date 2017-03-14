@@ -1,0 +1,51 @@
+module openafs-server 1.3;
+
+require {
+        type etc_t;
+        type afs_t;
+        type tmp_t;
+        type bin_t;
+        type var_t;
+        type afs_bosserver_t;
+        type afs_fs_port_t;
+        type afs_files_t;
+        type sssd_var_lib_t;
+        type fs_t;
+        type init_t;
+        type unconfined_service_t;
+        class process { noatsecure rlimitinh siginh };
+        class dir { add_name remove_name create read search write rmdir };
+        class file { append create lock execute execute_no_trans getattr setattr open rename unlink read write };
+        class sock_file { create unlink write };
+        class netlink_route_socket { bind create getattr getopt nlmsg_read setopt read write };
+        class capability { dac_override sys_nice chown fowner fsetid };
+        class unix_stream_socket connectto;
+        class filesystem getattr;
+        class udp_socket name_bind;
+}
+
+#============= afs_t ==============
+allow afs_t etc_t:dir { read write };
+
+#============= afs_bosserver_t ==============
+allow afs_bosserver_t self:netlink_route_socket nlmsg_read;
+allow afs_bosserver_t bin_t:file { execute execute_no_trans };
+allow afs_bosserver_t self:netlink_route_socket { bind create getattr getopt nlmsg_read setopt read write };
+allow afs_bosserver_t var_t:dir { add_name remove_name read write };
+allow afs_bosserver_t etc_t:dir { add_name remove_name read write };
+allow afs_bosserver_t var_t:file { append lock create getattr open rename unlink read write };
+allow afs_bosserver_t etc_t:file { append lock create getattr open rename unlink read write };
+allow afs_bosserver_t afs_files_t:dir { create rmdir };
+allow afs_bosserver_t afs_files_t:file { lock getattr unlink create open read write append setattr };
+allow afs_bosserver_t afs_fs_port_t:udp_socket name_bind;
+allow afs_bosserver_t fs_t:filesystem getattr;
+allow afs_bosserver_t self:capability { dac_override sys_nice chown fowner fsetid };
+allow afs_bosserver_t self:unix_stream_socket connectto;
+allow afs_bosserver_t sssd_var_lib_t:dir search;
+allow afs_bosserver_t var_t:sock_file { create unlink write };
+allow afs_bosserver_t tmp_t:dir { write add_name remove_name };
+allow afs_bosserver_t tmp_t:file { unlink create open write };
+
+#============= init_t ==============
+allow init_t afs_bosserver_t:process { noatsecure rlimitinh };
+
