@@ -84,17 +84,17 @@ AUTOINSTALL=yes
 EOF
 
 %pre
-dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all >/dev/null 2>&1 || :
+dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all &>/dev/null
 exit 0
 
 %post
-dkms add -m %{module} -v %{version} --rpm_safe_upgrade >/dev/null 2>&1 || :
-dkms build -m %{module} -v %{version} --rpm_safe_upgrade >/dev/null 2>&1 || :
-dkms install -m %{module} -v %{version} --rpm_safe_upgrade >/dev/null 2>&1 || :
+dkms add -m %{module} -v %{version} --rpm_safe_upgrade &>/dev/null
+dkms build -m %{module} -v %{version} --rpm_safe_upgrade &>/dev/null
+dkms install -m %{module} -v %{version} --rpm_safe_upgrade &>/dev/null
 exit 0
 
 %preun
-dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all >/dev/null 2>&1 || :
+dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all &>/dev/null
 exit 0
 %postun
 
