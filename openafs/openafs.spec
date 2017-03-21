@@ -23,7 +23,7 @@
 Summary:        Enterprise Network File System
 Name:           openafs
 Version:        1.6.20.1
-Release:        1%{?pre}%{?dist}
+Release:        2%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -69,6 +69,7 @@ Patch4:        openafs-1.6.6-systemd-fhs.patch
 Patch5:        openafs-1.6.6-systemd-env-vars.patch
 # Add ExecPostStart "sysnames" helper script.
 Patch6:        openafs-1.6.6-systemd-execpoststart.patch
+Patch7:        Linux-4.10-have_submounts-is-gone.patch
 
 
 %description
@@ -168,6 +169,10 @@ Cell.
 %patch4 -p1 -b .fhs
 %patch5 -p1 -b .envvars
 %patch6 -p1 -b .execpoststart
+
+%if 0%{?fedora:1}
+%patch7 -p1 -b .Linux-4.10-have_submounts-is-gone
+%endif
 
 
 # Convert the licese to UTF-8
@@ -496,6 +501,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Tue Mar 21 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-2
+- add patch for 4.10 kernels on fedora distro.
+
 * Wed Jan 11 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-1
 - Update to 1.6.20.1
 - remove -nosettime argument to afsd because it is deprecated.

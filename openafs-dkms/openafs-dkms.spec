@@ -22,11 +22,12 @@
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
 Version:        1.6.20.1
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
+Patch0:         Linux-4.10-have_submounts-is-gone.patch
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
 %if 0%{?rhel} == 7
@@ -47,6 +48,10 @@ This package provides the DKMS enabled kernel modules for AFS.
 
 %prep
 %setup -q -n %{module}-%{version}
+
+%if 0%{?fedora:1}
+%patch0 -p1 -b .Linux-4.10-have_submounts-is-gone
+%endif
 
 
 %build
@@ -79,18 +84,17 @@ AUTOINSTALL=yes
 EOF
 
 %pre
-echo -e "Uninstall of %{module} module (version %{version}) beginning:"
-dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all ||:
+dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all >/dev/null 2>&1 || :
 exit 0
 
 %post
-dkms add -m %{module} -v %{version} --rpm_safe_upgrade
-dkms build -m %{module} -v %{version} --rpm_safe_upgrade
-dkms install -m %{module} -v %{version} --rpm_safe_upgrade
+dkms add -m %{module} -v %{version} --rpm_safe_upgrade >/dev/null 2>&1 || :
+dkms build -m %{module} -v %{version} --rpm_safe_upgrade >/dev/null 2>&1 || :
+dkms install -m %{module} -v %{version} --rpm_safe_upgrade >/dev/null 2>&1 || :
+exit 0
 
 %preun
-echo -e "Uninstall of %{module} module (version %{version}) beginning:"
-dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all ||:
+dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all >/dev/null 2>&1 || :
 exit 0
 %postun
 
@@ -100,6 +104,9 @@ exit 0
 
 
 %changelog
+* Tue Mar 21 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-3
+- add patch for 4.10 kernels on fedora distro.
+
 * Tue Mar 14 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-2
 - remove all services and unit files. Its not the best way to fix the 
   problem of superfluous initramfs files from /boot. Lets try something else.
