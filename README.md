@@ -36,5 +36,5 @@ for centos 7 for example.
 
 The openafs-kmod package may only be built for centos or RHEL. To build it on
 fedora you would need many more mock configuration files to add the rpmfusion 
-yum repo to your build environment.
+yum repo to your build environment. We do not use kmods at NCSU on fedora.
 
