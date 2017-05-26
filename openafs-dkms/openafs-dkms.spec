@@ -21,20 +21,21 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.6.20.1
-Release:        3%{?dist}
+Version:        1.6.20.2
+Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
-Patch0:         Linux-4.10-have_submounts-is-gone.patch
+Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
-%if 0%{?rhel} == 7
-BuildRequires:  systemd-units
+%if 0%{?_with_systemd}
+BuildRequires: systemd-units
 %endif
 Requires:       openafs-client = %{version}
 Requires:       dkms
+Requires:       elfutils-libelf-devel
 Requires:       kernel-devel
 Provides:       openafs.ko
 
@@ -50,7 +51,7 @@ This package provides the DKMS enabled kernel modules for AFS.
 %setup -q -n %{module}-%{version}
 
 %if 0%{?fedora:1}
-%patch0 -p1 -b .Linux-4.10-have_submounts-is-gone
+%patch0 -p1 -b .411fix
 %endif
 
 
@@ -80,7 +81,7 @@ MAKE[0]="( ./configure --with-linux-kernel-headers=\${kernel_source_dir}; make; 
 CLEAN="make -C src/libafs clean"
 BUILT_MODULE_NAME[0]="\$PACKAGE_NAME"
 DEST_MODULE_LOCATION[0]="/extra/\$PACKAGE_NAME/"
-AUTOINSTALL=yes
+AUTOINSTALL="yes"
 EOF
 
 %pre
@@ -104,6 +105,15 @@ exit 0
 
 
 %changelog
+* Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
+- remove "NO_WEAK_MODULES=yes" to dkms.conf file.
+- remove Linux-4.10-have_submounts-is-gone.patch.
+- add gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch for gcc >= 7.0.1
+- Update to 1.6.20.2
+
+* Mon May 08 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-4
+- add "NO_WEAK_MODULES=yes" to dkms.conf file.
+
 * Tue Mar 21 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-3
 - add patch for 4.10 kernels on fedora distro.
 

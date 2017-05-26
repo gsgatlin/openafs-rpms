@@ -1,0 +1,12 @@
+diff -up openafs-1.6.20.2/src/packaging/RedHat/openafs-client.service.envvars openafs-1.6.20.2/src/packaging/RedHat/openafs-client.service
+--- openafs-1.6.20.2/src/packaging/RedHat/openafs-client.service.envvars	2017-05-25 16:59:53.632519962 -0400
++++ openafs-1.6.20.2/src/packaging/RedHat/openafs-client.service	2017-05-25 17:07:21.599016688 -0400
+@@ -10,7 +10,7 @@ RemainAfterExit=true
+ EnvironmentFile=/etc/sysconfig/openafs
+ ExecStartPre=/bin/bash -c "fs sysname > /dev/null 2>/dev/null; test $? -ne 0 || (echo AFS client appears to be running -- not starting && exit 1)"
+ ExecStartPre=/sbin/modprobe openafs
+-ExecStart=/usr/sbin/afsd $AFSD_ARGS
++ExecStart=/usr/sbin/afsd $AFSD_ARGS $CACHE $OPTIONS $CONFDIR
+ ExecStop=/bin/umount /afs
+ ExecStop=/usr/sbin/afsd -shutdown
+ ExecStop=/sbin/rmmod libafs

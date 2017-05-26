@@ -22,8 +22,8 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.20.1
-Release:        2%{?pre}%{?dist}
+Version:        1.6.20.2
+Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -60,16 +60,16 @@ BuildRequires: systemd-units
 Patch0:         openafs-1.6.0-fPIC.patch
 Patch1:         openafs-1.6.2-fPIC-1.patch
 # systemd: Skip CellServDB manipulation
-Patch2:        openafs-1.6.6-systemd-no-cellservdb.patch
+Patch2:         openafs-1.6.20.2-systemd-no-cellservdb.patch
 # systemd: unload the proper kernel module
 Patch3:        openafs-1.6.6-systemd-kmod-name.patch
 # systemd: use FHS-style paths instead of transarc paths
-Patch4:        openafs-1.6.6-systemd-fhs.patch
+Patch4:        openafs-1.6.20.2-systemd-fhs.patch
 # systemd: add additional user-friendly environment vars
-Patch5:        openafs-1.6.6-systemd-env-vars.patch
+Patch5:        openafs-1.6.20.2-systemd-env-vars.patch
 # Add ExecPostStart "sysnames" helper script.
-Patch6:        openafs-1.6.6-systemd-execpoststart.patch
-Patch7:        Linux-4.10-have_submounts-is-gone.patch
+Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
+Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
 
 
 %description
@@ -171,7 +171,7 @@ Cell.
 %patch6 -p1 -b .execpoststart
 
 %if 0%{?fedora:1}
-%patch7 -p1 -b .Linux-4.10-have_submounts-is-gone
+%patch7 -p1 -b .411fix
 %endif
 
 
@@ -182,9 +182,12 @@ rm src/LICENSE~
 
 %build
 
+
 # do the main build
 buildIt() {
 ./regen.sh
+
+export KRB5_CONFIG="/usr/bin/krb5-config"
 
 # build the user-space bits for base architectures
     ./configure \
@@ -198,8 +201,7 @@ buildIt() {
         --with-linux-kernel-headers=%{ksource_dir} \
         --disable-kernel-module \
         --disable-strip-binaries \
-        --enable-supergroups  \
-        --with-krb5-conf=/usr/bin/krb5-config
+        --enable-supergroups
 
     # Build is not SMP compliant
     make $RPM_OPT_FLGS all_nolibafs
@@ -501,6 +503,12 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
+- remove Linux-4.10-have_submounts-is-gone.patch
+- add gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch for gcc >= 7.0.1
+- re-work most systemd patches due to changes in underlying unit file code.
+- Update to 1.6.20.2
+
 * Tue Mar 21 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-2
 - add patch for 4.10 kernels on fedora distro.
 
