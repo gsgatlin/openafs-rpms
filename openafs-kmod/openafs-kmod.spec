@@ -21,17 +21,17 @@
 
 %if 0%{?rhel} == 6
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 2.6.32-642.15.1.el6.%{_target_cpu}}
+%{!?kversion: %define kversion 2.6.32-696.1.1.el6.%{_target_cpu}}
 %endif
 
 %if 0%{?rhel} == 7
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 3.10.0-514.10.2.el7.%{_target_cpu}}
+%{!?kversion: %define kversion 3.10.0-514.16.1.el7.%{_target_cpu}}
 %endif
 
 
 Name:           %{kmod_name}-kmod
-Version:        1.6.20.1
+Version:        1.6.20.2
 Release:        1%{?pre}%{?dist}
 Group:          System Environment/Kernel
 License:        IBM
@@ -57,6 +57,8 @@ Source5:	    LICENSE
 Source10: 	    kmodtool-el6-%{kmod_name}.sh
 Source15: 	    kmodtool-el7-%{kmod_name}.sh
 Source20:       kmodtool-fedora-%{kmod_name}.sh
+Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
+
 
 
 # Magic hidden below.
@@ -92,6 +94,7 @@ It is built to depend upon the specific ABI provided by a range of releases
 of the same variant of the Linux kernel and not on any one specific build.
 
 %prep
+
 %if 0%{?fedora:1}
 # error out if there was something wrong with kmodtool
 %{?kmodtool_check}
@@ -101,6 +104,7 @@ of the same variant of the Linux kernel and not on any one specific build.
 
 
 %setup -q -c -T -a 0
+
 # apply patches and do other stuff here
 pushd %{kmod_name}-%{version}%{pre}
 ./regen.sh
@@ -114,6 +118,10 @@ done
 %setup -q -n %{kmod_name}-%{version}%{?pre}
 echo "override %{kmod_name} * weak-updates/%{kmod_name}" \
     > kmod-%{kmod_name}.conf
+%endif
+
+%if 0%{?fedora:1}
+%patch0 -p1 -b .411fix
 %endif
 
 %build
@@ -177,6 +185,10 @@ find %{buildroot} -type f -name \*.ko -exec %{__chmod} a+x \{\} \;
 %{__rm} -rf %{buildroot}
 
 %changelog
+* Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
+- add gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch for gcc >= 7.0.1
+- Update to 1.6.20.2
+
 * Tue Mar 14 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.1-1
 - Update to 1.6.20.1
 
