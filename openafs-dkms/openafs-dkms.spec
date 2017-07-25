@@ -21,7 +21,7 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.6.20.2
+Version:        1.6.21
 Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
@@ -105,6 +105,10 @@ exit 0
 
 
 %changelog
+
+* Tue Jul 25 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
+- Update to 1.6.21 for 4.12 kernel.
+
 * Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
 - remove "NO_WEAK_MODULES=yes" to dkms.conf file.
 - remove Linux-4.10-have_submounts-is-gone.patch.

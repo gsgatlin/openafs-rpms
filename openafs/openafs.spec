@@ -22,7 +22,7 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.20.2
+Version:        1.6.21
 Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
@@ -503,6 +503,10 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+
+* Tue Jul 25 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
+- Update to 1.6.21 for 4.12 kernel.
+
 * Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
 - remove Linux-4.10-have_submounts-is-gone.patch
 - add gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch for gcc >= 7.0.1

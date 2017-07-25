@@ -21,17 +21,17 @@
 
 %if 0%{?rhel} == 6
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 2.6.32-696.1.1.el6.%{_target_cpu}}
+%{!?kversion: %define kversion 2.6.32-696.6.3.el6.%{_target_cpu}}
 %endif
 
 %if 0%{?rhel} == 7
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 3.10.0-514.16.1.el7.%{_target_cpu}}
+%{!?kversion: %define kversion 3.10.0-514.26.2.el7.%{_target_cpu}}
 %endif
 
 
 Name:           %{kmod_name}-kmod
-Version:        1.6.20.2
+Version:        1.6.21
 Release:        1%{?pre}%{?dist}
 Group:          System Environment/Kernel
 License:        IBM
@@ -185,6 +185,10 @@ find %{buildroot} -type f -name \*.ko -exec %{__chmod} a+x \{\} \;
 %{__rm} -rf %{buildroot}
 
 %changelog
+
+* Tue Jul 25 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
+- Update to 1.6.21 for 4.12 kernel.
+
 * Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
 - add gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch for gcc >= 7.0.1
 - Update to 1.6.20.2
