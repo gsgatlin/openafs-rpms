@@ -71,6 +71,7 @@ Patch5:        openafs-1.6.20.2-systemd-env-vars.patch
 Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
 Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
 
+Patch8:        openafs-1.6.21-stdintfix.patch
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -174,6 +175,9 @@ Cell.
 %patch7 -p1 -b .411fix
 %endif
 
+%if 0%{?fedora} >=27
+%patch8 -p1 -b .stdintfix
+%endif
 
 # Convert the licese to UTF-8
 mv src/LICENSE src/LICENSE~
@@ -504,8 +508,9 @@ rm -fr $RPM_BUILD_ROOT
 
 %changelog
 
-* Tue Jul 25 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
+* Mon Aug 7 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
 - Update to 1.6.21 for 4.12 kernel.
+- Fix build problems in fc27+ with stdintfix.patch
 
 * Fri May 26 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.20.2-1
 - remove Linux-4.10-have_submounts-is-gone.patch
