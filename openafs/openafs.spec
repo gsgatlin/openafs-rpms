@@ -22,7 +22,7 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.21
+Version:        1.6.21.1
 Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
@@ -507,6 +507,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+
+* Thu Oct 5 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21.1-1
+- Update to 1.6.21.1 for 4.13 kernel.
 
 * Mon Aug 7 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
 - Update to 1.6.21 for 4.12 kernel.

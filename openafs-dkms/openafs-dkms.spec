@@ -21,7 +21,7 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.6.21
+Version:        1.6.21.1
 Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
@@ -105,6 +105,9 @@ exit 0
 
 
 %changelog
+
+* Thu Oct 5 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21.1-1
+- Update to 1.6.21.1 for 4.13 kernel.
 
 * Tue Jul 25 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21-1
 - Update to 1.6.21 for 4.12 kernel.
