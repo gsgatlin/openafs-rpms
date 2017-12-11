@@ -21,17 +21,17 @@
 
 %if 0%{?rhel} == 6
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 2.6.32-696.6.3.el6.%{_target_cpu}}
+%{!?kversion: %define kversion 2.6.32-696.16.1.el6.%{_target_cpu}}
 %endif
 
 %if 0%{?rhel} == 7
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 3.10.0-514.26.2.el7.%{_target_cpu}}
+%{!?kversion: %define kversion 3.10.0-693.11.1.el7.%{_target_cpu}}
 %endif
 
 
 Name:           %{kmod_name}-kmod
-Version:        1.6.21.1
+Version:        1.6.22
 Release:        1%{?pre}%{?dist}
 Group:          System Environment/Kernel
 License:        IBM
@@ -58,6 +58,9 @@ Source10: 	    kmodtool-el6-%{kmod_name}.sh
 Source15: 	    kmodtool-el7-%{kmod_name}.sh
 Source20:       kmodtool-fedora-%{kmod_name}.sh
 Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
+Patch1:         correct-m4-conditionals-in-curses.m4.patch
+Patch2:         linux-test-for-vfswrite-rather-than-vfsread.patch
+Patch3:         linux-use-kernelread-kernelwrite-when-vfs-varian.patch
 
 
 
@@ -122,6 +125,9 @@ echo "override %{kmod_name} * weak-updates/%{kmod_name}" \
 
 %if 0%{?fedora:1}
 %patch0 -p1 -b .411fix
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
 %endif
 
 %build
@@ -185,6 +191,8 @@ find %{buildroot} -type f -name \*.ko -exec %{__chmod} a+x \{\} \;
 %{__rm} -rf %{buildroot}
 
 %changelog
+* Sun Dec 10 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22-1
+- Update to 1.6.22 for 4.14 kernel.
 
 * Thu Oct 5 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21.1-1
 - Update to 1.6.21.1 for 4.13 kernel.

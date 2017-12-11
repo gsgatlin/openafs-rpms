@@ -22,7 +22,7 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.21.1
+Version:        1.6.22
 Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
@@ -72,6 +72,9 @@ Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
 Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
 
 Patch8:        openafs-1.6.21-stdintfix.patch
+Patch9:        correct-m4-conditionals-in-curses.m4.patch
+Patch10:       linux-test-for-vfswrite-rather-than-vfsread.patch
+Patch11:       linux-use-kernelread-kernelwrite-when-vfs-varian.patch
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -178,7 +181,11 @@ Cell.
 %if 0%{?fedora} >=27
 %patch8 -p1 -b .stdintfix
 %endif
-
+%if 0%{?fedora:1}
+%patch9 -p1
+%patch10 -p1
+%patch11 -p1
+%endif
 # Convert the licese to UTF-8
 mv src/LICENSE src/LICENSE~
 iconv -f ISO-8859-1 -t UTF8 src/LICENSE~ > src/LICENSE
@@ -507,6 +514,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+
+* Sun Dec 10 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22-1
+- Update to 1.6.22 for 4.14 kernel.
 
 * Thu Oct 5 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.21.1-1
 - Update to 1.6.21.1 for 4.13 kernel.
