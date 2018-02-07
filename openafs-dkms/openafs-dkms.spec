@@ -21,16 +21,13 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.6.22
+Version:        1.6.22.2
 Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
 Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
-Patch1:         correct-m4-conditionals-in-curses.m4.patch
-Patch2:         linux-test-for-vfswrite-rather-than-vfsread.patch
-Patch3:         linux-use-kernelread-kernelwrite-when-vfs-varian.patch
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
 %if 0%{?_with_systemd}
@@ -55,9 +52,6 @@ This package provides the DKMS enabled kernel modules for AFS.
 
 %if 0%{?fedora:1}
 %patch0 -p1 -b .411fix
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 %endif
 
 
@@ -111,6 +105,9 @@ exit 0
 
 
 %changelog
+* Wed Feb 7 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-1
+- Update to 1.6.22.2 for 4.15 kernel.
+
 * Sun Dec 10 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22-1
 - Update to 1.6.22 for 4.14 kernel.
 
