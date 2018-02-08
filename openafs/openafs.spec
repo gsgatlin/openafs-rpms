@@ -70,6 +70,7 @@ Patch5:        openafs-1.6.20.2-systemd-env-vars.patch
 # Add ExecPostStart "sysnames" helper script.
 Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
 Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
+Patch8:        openafs-1.6.22.2-replace-types-with-xdr.patch
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -173,6 +174,7 @@ Cell.
 %patch7 -p1 -b .411fix
 %endif
 
+%patch8 -p1 -b .replacetypeswithxdr
 
 # Convert the licese to UTF-8
 mv src/LICENSE src/LICENSE~
@@ -503,7 +505,7 @@ rm -fr $RPM_BUILD_ROOT
 
 %changelog
 
-* Wed Feb 7 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-1
+* Thu Feb 8 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-1
 - Update to 1.6.22.2 for 4.15 kernel.
 
 * Sun Dec 10 2017 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22-1

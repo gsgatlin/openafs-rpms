@@ -1,0 +1,160 @@
+diff -up openafs-1.6.22.2/src/afs/afs_fetchstore.c.replacetypeswithxdr openafs-1.6.22.2/src/afs/afs_fetchstore.c
+--- openafs-1.6.22.2/src/afs/afs_fetchstore.c.replacetypeswithxdr	2018-02-08 10:00:57.447566466 -0500
++++ openafs-1.6.22.2/src/afs/afs_fetchstore.c	2018-02-08 10:02:00.642739892 -0500
+@@ -11,9 +11,6 @@
+ #include "afs/param.h"
+ 
+ #include "afs/sysincludes.h"	/* Standard vendor system headers */
+-#ifndef AFS_LINUX22_ENV
+-#include "rpc/types.h"
+-#endif
+ #ifdef	AFS_ALPHA_ENV
+ #undef kmem_alloc
+ #undef kmem_free
+diff -up openafs-1.6.22.2/src/afs/afs_memcache.c.replacetypeswithxdr openafs-1.6.22.2/src/afs/afs_memcache.c
+--- openafs-1.6.22.2/src/afs/afs_memcache.c.replacetypeswithxdr	2018-02-08 10:02:39.398232982 -0500
++++ openafs-1.6.22.2/src/afs/afs_memcache.c	2018-02-08 10:11:43.347116982 -0500
+@@ -12,9 +12,6 @@
+ 
+ 
+ #include "afs/sysincludes.h"	/* Standard vendor system headers */
+-#ifndef AFS_LINUX22_ENV
+-#include "rpc/types.h"
+-#endif
+ #include "afsincludes.h"	/* Afs-based standard headers */
+ #include "afs/afs_stats.h"	/* statistics */
+ 
+diff -up openafs-1.6.22.2/src/afs/afs_nfsdisp.c.replacetypeswithxdr openafs-1.6.22.2/src/afs/afs_nfsdisp.c
+--- openafs-1.6.22.2/src/afs/afs_nfsdisp.c.replacetypeswithxdr	2018-02-08 10:12:21.245621174 -0500
++++ openafs-1.6.22.2/src/afs/afs_nfsdisp.c	2018-02-08 10:14:27.249974000 -0500
+@@ -24,7 +24,6 @@
+ #include "rpc/auth_kerb.h"
+ #endif
+ #include "sys/tiuser.h"
+-#include "rpc/xdr.h"
+ #include "rpc/svc.h"
+ #include "nfs/nfs.h"
+ 
+diff -up openafs-1.6.22.2/src/afs/AIX/osi_misc.c.replacetypeswithxdr openafs-1.6.22.2/src/afs/AIX/osi_misc.c
+--- openafs-1.6.22.2/src/afs/AIX/osi_misc.c.replacetypeswithxdr	2018-02-08 09:48:05.944711174 -0500
++++ openafs-1.6.22.2/src/afs/AIX/osi_misc.c	2018-02-08 09:50:45.463598746 -0500
+@@ -32,15 +32,12 @@
+ #include "h/chownx.h"
+ #include "h/systm.h"
+ #include "h/access.h"
+-#include "rpc/types.h"
+ #include "osi_vfs.h"
+ #include "netinet/in.h"
+ #include "h/mbuf.h"
+-#include "rpc/types.h"
+ #include "rpc/xdr.h"
+ #include "h/vmuser.h"
+ #include "h/syspest.h"
+-
+ #include "afs/stds.h"
+ #include "afs/afs_osi.h"
+ #define RFTP_INTERNALS 1
+diff -up openafs-1.6.22.2/src/afs/AIX/osi_vnodeops.c.replacetypeswithxdr openafs-1.6.22.2/src/afs/AIX/osi_vnodeops.c
+--- openafs-1.6.22.2/src/afs/AIX/osi_vnodeops.c.replacetypeswithxdr	2018-02-08 09:51:47.051785172 -0500
++++ openafs-1.6.22.2/src/afs/AIX/osi_vnodeops.c	2018-02-08 09:52:59.484829032 -0500
+@@ -26,13 +26,11 @@
+ #ifdef AFS_AIX51_ENV
+ #include "h/acl.h"
+ #endif
+-#include "rpc/types.h"
+ #include "osi_vfs.h"
+ #include "netinet/in.h"
+ #include "h/mbuf.h"
+ #include "h/vmuser.h"
+ #include "h/shm.h"
+-#include "rpc/types.h"
+ #include "rpc/xdr.h"
+ 
+ #include "afs/stds.h"
+diff -up openafs-1.6.22.2/src/afs/sysincludes.h.replacetypeswithxdr openafs-1.6.22.2/src/afs/sysincludes.h
+--- openafs-1.6.22.2/src/afs/sysincludes.h.replacetypeswithxdr	2018-02-08 10:16:02.828724664 -0500
++++ openafs-1.6.22.2/src/afs/sysincludes.h	2018-02-08 10:17:01.595955694 -0500
+@@ -417,7 +417,6 @@ MALLOC_DECLARE(M_AFS);
+ #  endif
+ # endif /* AFS_SUN5_ENV */
+ 
+-# include "rpc/types.h"
+ # include "rx/xdr.h"
+ 
+ /* Miscellaneous headers */
+diff -up openafs-1.6.22.2/src/fsint/afsaux.c.replacetypeswithxdr openafs-1.6.22.2/src/fsint/afsaux.c
+--- openafs-1.6.22.2/src/fsint/afsaux.c.replacetypeswithxdr	2018-02-08 10:17:30.380577242 -0500
++++ openafs-1.6.22.2/src/fsint/afsaux.c	2018-02-08 10:18:06.273105337 -0500
+@@ -22,7 +22,6 @@
+ #include "afsincludes.h"
+ #else
+ #include "h/types.h"
+-#include "rpc/types.h"
+ #include "rx/xdr.h"
+ #endif
+ #if !defined(AFS_ALPHA_ENV)
+diff -up openafs-1.6.22.2/src/rxgen/rpc_main.c.replacetypeswithxdr openafs-1.6.22.2/src/rxgen/rpc_main.c
+--- openafs-1.6.22.2/src/rxgen/rpc_main.c.replacetypeswithxdr	2018-02-08 10:21:34.521367345 -0500
++++ openafs-1.6.22.2/src/rxgen/rpc_main.c	2018-02-08 10:23:12.654077124 -0500
+@@ -503,9 +503,6 @@ h_output(char *infile, char *define, int
+     f_print(fout, "#ifndef	DST_USA  /* XXXXX */\n");
+     f_print(fout, "#include \"h/time.h\"\n");
+     f_print(fout, "#endif\n");
+-    f_print(fout, "#ifndef AFS_LINUX22_ENV\n");
+-    f_print(fout, "#include \"rpc/types.h\"\n");
+-    f_print(fout, "#endif /* AFS_LINUX22_ENV */\n");
+     f_print(fout, "#ifndef	XDR_GETLONG /* XXXXX */\n");
+     f_print(fout, "#ifdef AFS_LINUX22_ENV\n");
+     f_print(fout, "#ifndef quad_t\n");
+@@ -680,7 +677,6 @@ C_output(char *infile, char *define, int
+ 	    f_print(fout, "#include \"h/stat.h\"\n");
+ 	    f_print(fout, "#include \"netinet/in.h\"\n");
+ 	    f_print(fout, "#include \"h/time.h\"\n");
+-	    f_print(fout, "#include \"rpc/types.h\"\n");
+ 	    f_print(fout, "#include \"rx/xdr.h\"\n");
+ 	    f_print(fout, "#include \"afs/rxgen_consts.h\"\n");
+ 	    f_print(fout, "#include \"afs/afs_osi.h\"\n");
+@@ -751,7 +747,6 @@ S_output(char *infile, char *define, int
+ 	    f_print(fout, "#include \"h/stat.h\"\n");
+ 	    f_print(fout, "#include \"netinet/in.h\"\n");
+ 	    f_print(fout, "#include \"h/time.h\"\n");
+-	    f_print(fout, "#include \"rpc/types.h\"\n");
+ 	    f_print(fout, "#include \"rx/xdr.h\"\n");
+ 	    f_print(fout, "#include \"afs/rxgen_consts.h\"\n");
+ 	    f_print(fout, "#include \"afs/afs_osi.h\"\n");
+diff -up openafs-1.6.22.2/src/rxkad/rxkad_client.c.replacetypeswithxdr openafs-1.6.22.2/src/rxkad/rxkad_client.c
+--- openafs-1.6.22.2/src/rxkad/rxkad_client.c.replacetypeswithxdr	2018-02-08 10:44:20.664570293 -0500
++++ openafs-1.6.22.2/src/rxkad/rxkad_client.c	2018-02-08 10:44:49.649202770 -0500
+@@ -37,7 +37,6 @@
+ #include "afs/sysincludes.h"
+ #endif /* !UKERNEL */
+ #ifndef AFS_LINUX22_ENV
+-#include "rpc/types.h"
+ #include "rx/xdr.h"
+ #endif
+ #include "rx/rx.h"
+diff -up openafs-1.6.22.2/src/rx/rx_kcommon.h.replacetypeswithxdr openafs-1.6.22.2/src/rx/rx_kcommon.h
+--- openafs-1.6.22.2/src/rx/rx_kcommon.h.replacetypeswithxdr	2018-02-08 10:18:40.105660515 -0500
++++ openafs-1.6.22.2/src/rx/rx_kcommon.h	2018-02-08 10:19:35.722929274 -0500
+@@ -133,9 +133,6 @@ typedef unsigned short etap_event_t;
+ #if !defined(AFS_HPUX110_ENV) && !defined(AFS_LINUX22_ENV) && !defined(AFS_DARWIN_ENV)
+ #include "netinet/in_var.h"
+ #endif /* ! AFS_HPUX110_ENV && ! AFS_LINUX22_ENV */
+-#if !defined(AFS_LINUX22_ENV) && !defined(AFS_DUX40_ENV)
+-#include "rpc/types.h"
+-#endif
+ #include "afs/afs_osi.h"
+ #include "rx_kmutex.h"
+ #include "afs/lock.h"
+diff -up openafs-1.6.22.2/src/rx/xdr_rx.c.replacetypeswithxdr openafs-1.6.22.2/src/rx/xdr_rx.c
+--- openafs-1.6.22.2/src/rx/xdr_rx.c.replacetypeswithxdr	2018-02-08 10:20:08.088503740 -0500
++++ openafs-1.6.22.2/src/rx/xdr_rx.c	2018-02-08 10:20:57.443854831 -0500
+@@ -29,8 +29,6 @@
+ #  endif /* AFS_OSF_ENV */
+ #  ifdef AFS_LINUX20_ENV
+ #   include "h/socket.h"
+-#  else
+-#   include "rpc/types.h"
+ #  endif
+ #  ifdef  AFS_OSF_ENV
+ #   undef kmem_alloc
