@@ -6,11 +6,11 @@
 %ifarch %{ix86} 
 %define sysname i386_linux26
 %endif
-%ifarch ppc
-%define sysname ppc_linux26
-%endif
 %ifarch ppc64
 %define sysname ppc64_linux26
+%endif
+%ifarch ppc64le
+%define sysname ppc64le_linux26
 %endif
 %ifarch x86_64
 %define sysname amd64_linux26
@@ -22,12 +22,13 @@
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
 Version:        1.6.22.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
 Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
+Patch1:         openafs-1.6.22.2-rh75enotdir.patch
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
 %if 0%{?_with_systemd}
@@ -53,6 +54,7 @@ This package provides the DKMS enabled kernel modules for AFS.
 %if 0%{?fedora:1}
 %patch0 -p1 -b .411fix
 %endif
+%patch1 -p1 -b .rh75enotdir
 
 
 %build
@@ -105,6 +107,9 @@ exit 0
 
 
 %changelog
+* Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
+- add rh75enotdir patch for rhel/centos 7.5.
+
 * Wed Feb 7 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-1
 - Update to 1.6.22.2 for 4.15 kernel.
 

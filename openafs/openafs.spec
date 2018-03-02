@@ -3,8 +3,11 @@
 %ifarch %{ix86}
 %define sysname i386_linux26
 %endif
-%ifarch ppc ppc64
-%define sysname ppc_linux26
+%ifarch ppc64
+%define sysname ppc64_linux26
+%endif
+%ifarch ppc64le
+%define sysname ppc64le_linux26
 %endif
 %ifarch x86_64
 %define sysname amd64_linux26
@@ -23,7 +26,7 @@
 Summary:        Enterprise Network File System
 Name:           openafs
 Version:        1.6.22.2
-Release:        1%{?pre}%{?dist}
+Release:        2%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -71,6 +74,7 @@ Patch5:        openafs-1.6.20.2-systemd-env-vars.patch
 Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
 Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
 Patch8:        openafs-1.6.22.2-replace-types-with-xdr.patch
+Patch9:        openafs-1.6.22.2-rh75enotdir.patch
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -175,6 +179,7 @@ Cell.
 %endif
 
 %patch8 -p1 -b .replacetypeswithxdr
+%patch9 -p1 -b .rh75enotdir
 
 # Convert the licese to UTF-8
 mv src/LICENSE src/LICENSE~
@@ -504,6 +509,8 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
+- add rh75enotdir patch for rhel/centos 7.5.
 
 * Thu Feb 8 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-1
 - Update to 1.6.22.2 for 4.15 kernel.

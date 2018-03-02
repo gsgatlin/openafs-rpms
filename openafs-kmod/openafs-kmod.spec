@@ -5,11 +5,11 @@
 %ifarch %{ix86} 
 %define sysname i386_linux26
 %endif
-%ifarch ppc
-%define sysname ppc_linux26
-%endif
 %ifarch ppc64
 %define sysname ppc64_linux26
+%endif
+%ifarch ppc64le
+%define sysname ppc64le_linux26
 %endif
 %ifarch x86_64
 %define sysname amd64_linux26
@@ -32,7 +32,7 @@
 
 Name:           %{kmod_name}-kmod
 Version:        1.6.22.2
-Release:        1%{?pre}%{?dist}
+Release:        2%{?pre}%{?dist}
 Group:          System Environment/Kernel
 License:        IBM
 Summary:        %{kmod_name} kernel module(s)
@@ -58,7 +58,7 @@ Source10: 	    kmodtool-el6-%{kmod_name}.sh
 Source15: 	    kmodtool-el7-%{kmod_name}.sh
 Source20:       kmodtool-fedora-%{kmod_name}.sh
 Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
-
+Patch1:         openafs-1.6.22.2-rh75enotdir.patch
 
 # Magic hidden below.
 
@@ -123,6 +123,8 @@ echo "override %{kmod_name} * weak-updates/%{kmod_name}" \
 %patch0 -p1 -b .411fix
 %endif
 
+%patch1 -p1 -b .rh75enotdir
+
 %build
 %if 0%{?fedora:1}
 for kernel_version in %{?kernel_versions}; do
@@ -184,6 +186,8 @@ find %{buildroot} -type f -name \*.ko -exec %{__chmod} a+x \{\} \;
 %{__rm} -rf %{buildroot}
 
 %changelog
+* Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
+- add rh75enotdir patch for rhel/centos 7.5.
 
 * Wed Feb 7 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-1
 - Update to 1.6.22.2 for 4.15 kernel.
