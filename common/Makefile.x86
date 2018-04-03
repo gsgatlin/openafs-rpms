@@ -1,4 +1,4 @@
-.PHONY: clean install all srpm fc26 fc27 fc28 el6 el7
+.PHONY: clean install all srpm fc26 fc27 fc28 fc29 el6 el7
 .SUFFIXES: .spec .rpm
 all: build dist/*.fc26.i686.rpm dist/*.fc26.x86_64.rpm \
 dist/*.fc27.i686.rpm dist/*.fc27.x86_64.rpm  dist/*.fc28.i686.rpm \
