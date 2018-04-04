@@ -22,7 +22,7 @@
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
 Version:        1.6.22.2
-Release:        2%{?dist}
+Release:        3%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
@@ -107,6 +107,9 @@ exit 0
 
 
 %changelog
+* Wed Apr 4 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-3
+- Release bump for change in openafs package.
+
 * Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
 - add rh75enotdir patch for rhel/centos 7.5.
 

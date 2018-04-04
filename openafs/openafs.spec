@@ -26,7 +26,7 @@
 Summary:        Enterprise Network File System
 Name:           openafs
 Version:        1.6.22.2
-Release:        2%{?pre}%{?dist}
+Release:        3%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -185,6 +185,10 @@ Cell.
 mv src/LICENSE src/LICENSE~
 iconv -f ISO-8859-1 -t UTF8 src/LICENSE~ > src/LICENSE
 rm src/LICENSE~
+
+mv $RPM_SOURCE_DIR/CellServDB $RPM_SOURCE_DIR/CellServDB~
+iconv -f ISO-8859-1 -t UTF8 $RPM_SOURCE_DIR/CellServDB~ > $RPM_SOURCE_DIR/CellServDB
+rm -f $RPM_SOURCE_DIR/CellServDB~
 
 %build
 
@@ -509,6 +513,10 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Wed Apr 4 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-3
+- Add newer CellServDB and convert fix for 
+  "invalid byte sequence in UTF-8" when puppet tries to modify it.
+
 * Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
 - add rh75enotdir patch for rhel/centos 7.5.
 
