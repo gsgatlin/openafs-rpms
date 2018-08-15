@@ -25,8 +25,8 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.22.2
-Release:        3%{?pre}%{?dist}
+Version:        1.6.22.3
+Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -74,7 +74,7 @@ Patch5:        openafs-1.6.20.2-systemd-env-vars.patch
 Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
 Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
 Patch8:        openafs-1.6.22.2-replace-types-with-xdr.patch
-Patch9:        openafs-1.6.22.2-rh75enotdir.patch
+Patch10:       openafs-1.6.22.2-auristorfix.patch
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -179,7 +179,7 @@ Cell.
 %endif
 
 %patch8 -p1 -b .replacetypeswithxdr
-%patch9 -p1 -b .rh75enotdir
+%patch10 -p1 -b .auristorfix
 
 # Convert the licese to UTF-8
 mv src/LICENSE src/LICENSE~
@@ -513,6 +513,12 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
+- Update to 1.6.22.3
+
+* Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-4
+- add auristorfix patch from https://gerrit.openafs.org/#/c/13165/3
+
 * Wed Apr 4 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-3
 - Add newer CellServDB and convert fix for 
   "invalid byte sequence in UTF-8" when puppet tries to modify it.

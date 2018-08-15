@@ -21,18 +21,18 @@
 
 %if 0%{?rhel} == 6
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 2.6.32-696.20.1.el6.%{_target_cpu}}
+%{!?kversion: %define kversion 2.6.32-754.3.5.el6.%{_target_cpu}}
 %endif
 
 %if 0%{?rhel} == 7
 # If kversion isn't defined on the rpmbuild line, define it here.
-%{!?kversion: %define kversion 3.10.0-693.17.1.el7.%{_target_cpu}}
+%{!?kversion: %define kversion 3.10.0-862.11.6.el7.%{_target_cpu}}
 %endif
 
 
 Name:           %{kmod_name}-kmod
-Version:        1.6.22.2
-Release:        2%{?pre}%{?dist}
+Version:        1.6.22.3
+Release:        1%{?pre}%{?dist}
 Group:          System Environment/Kernel
 License:        IBM
 Summary:        %{kmod_name} kernel module(s)
@@ -58,7 +58,8 @@ Source10: 	    kmodtool-el6-%{kmod_name}.sh
 Source15: 	    kmodtool-el7-%{kmod_name}.sh
 Source20:       kmodtool-fedora-%{kmod_name}.sh
 Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
-Patch1:         openafs-1.6.22.2-rh75enotdir.patch
+#Patch1:         openafs-1.6.22.2-rh75enotdir.patch
+Patch2:         openafs-1.6.22.2-auristorfix.patch
 
 # Magic hidden below.
 
@@ -123,7 +124,8 @@ echo "override %{kmod_name} * weak-updates/%{kmod_name}" \
 %patch0 -p1 -b .411fix
 %endif
 
-%patch1 -p1 -b .rh75enotdir
+#%patch1 -p1 -b .rh75enotdir
+%patch2 -p1 -b .auristorfix
 
 %build
 %if 0%{?fedora:1}
@@ -186,6 +188,10 @@ find %{buildroot} -type f -name \*.ko -exec %{__chmod} a+x \{\} \;
 %{__rm} -rf %{buildroot}
 
 %changelog
+* Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
+- Update to 1.6.22.3
+- add auristorfix patch from https://gerrit.openafs.org/#/c/13165/3
+
 * Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
 - add rh75enotdir patch for rhel/centos 7.5.
 
