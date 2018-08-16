@@ -56,6 +56,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison
 BuildRequires:  automake, autoconf
 BuildRequires:  %{_bindir}/pod2man
+BuildRequires:  gcc
 %if 0%{?_with_systemd}
 BuildRequires: systemd-units
 %endif

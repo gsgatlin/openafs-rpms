@@ -50,6 +50,7 @@ Conflicts:      openafs-dkms
 %if 0%{?fedora:1}
 BuildRequires:  kmodtool
 BuildRequires:  buildsys-build-rpmfusion-kerneldevpkgs-current
+BuildRequires:  gcc
 %endif
 # Sources.
 Source0:  	    http://www.openafs.org/dl/openafs/%{version}/%{kmod_name}-%{version}%{?pre}-src.tar.bz2

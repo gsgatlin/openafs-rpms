@@ -33,6 +33,7 @@ Patch2:         openafs-1.6.22.2-auristorfix.patch
 
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
+BuildRequires:  gcc
 %if 0%{?_with_systemd}
 BuildRequires: systemd-units
 %endif
