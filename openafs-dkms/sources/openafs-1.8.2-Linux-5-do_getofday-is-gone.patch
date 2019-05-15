@@ -1,0 +1,35 @@
+diff -up openafs-1.8.2/src/afs/LINUX/osi_machdep.h.5fix openafs-1.8.2/src/afs/LINUX/osi_machdep.h
+--- openafs-1.8.2/src/afs/LINUX/osi_machdep.h.5fix	2019-03-25 16:36:28.075466605 -0400
++++ openafs-1.8.2/src/afs/LINUX/osi_machdep.h	2019-03-25 16:37:17.068595945 -0400
+@@ -94,7 +94,16 @@ static inline time_t osi_Time(void) {
+ 
+ 
+ 
+-#ifdef AFS_LINUX_64BIT_KERNEL
++
++#if defined(HAVE_LINUX_KTIME_GET_REAL_TS64)
++# define osi_GetTime(V)                                      \
++    do {                                                     \
++       struct timespec64 __afs_tv;                          \
++       ktime_get_real_ts64(&__afs_tv);                      \
++       (V)->tv_sec = (afs_int32)__afs_tv.tv_sec;            \
++       (V)->tv_usec = (afs_int32)__afs_tv.tv_nsec / 1000;   \
++    } while(0)
++#elif defined(AFS_LINUX_64BIT_KERNEL)
+ # define osi_GetTime(V)                                 \
+     do {                                               \
+        struct timeval __afs_tv;                              \
+diff -up openafs-1.8.2/src/cf/linux-kernel-func.m4.5fix openafs-1.8.2/src/cf/linux-kernel-func.m4
+--- openafs-1.8.2/src/cf/linux-kernel-func.m4.5fix	2019-03-25 16:37:48.411678688 -0400
++++ openafs-1.8.2/src/cf/linux-kernel-func.m4	2019-03-25 16:39:04.711880117 -0400
+@@ -76,6 +76,10 @@ AC_CHECK_LINUX_FUNC([ktime_get_coarse_re
+                     [#include <linux/time.h>],
+                     [struct timespec64 *s;
+                     ktime_get_coarse_real_ts64(s);])
++AC_CHECK_LINUX_FUNC([ktime_get_real_ts64],
++                    [#include <linux/ktime.h>],
++                    [struct timespec64 *s;
++                    ktime_get_real_ts64(s);])
+ AC_CHECK_LINUX_FUNC([locks_lock_file_wait],
+                     [#include <linux/fs.h>],
+                     [locks_lock_file_wait(NULL, NULL);])

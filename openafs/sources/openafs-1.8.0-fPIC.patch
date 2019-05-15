@@ -1,0 +1,21 @@
+diff -up openafs-1.8.0pre5/src/cf/osconf.m4.fpic openafs-1.8.0pre5/src/cf/osconf.m4
+--- openafs-1.8.0pre5/src/cf/osconf.m4.fpic	2018-03-10 18:55:32.459038029 -0500
++++ openafs-1.8.0pre5/src/cf/osconf.m4	2018-03-10 19:03:08.381494242 -0500
+@@ -215,7 +215,7 @@ case $AFS_SYSNAME in
+ 	amd64_linux*)
+ 		CCOBJ="\$(CC) -fPIC"
+ 		KERN_OPTMZ=-O2
+-		MT_CFLAGS='-pthread -D_REENTRANT'
++		MT_CFLAGS='-pthread -D_REENTRANT -fPIC'
+ 		PAM_OPTMZ=-O2
+ 		PAM_CFLAGS="-Dlinux -DLINUX_PAM -fPIC"
+ 		SHLIB_CFLAGS="-fPIC"
+@@ -237,7 +237,7 @@ case $AFS_SYSNAME in
+ 
+ 	i386_linux*)
+ 		KERN_OPTMZ=-O2
+-		MT_CFLAGS='-pthread -D_REENTRANT'
++		MT_CFLAGS='-pthread -D_REENTRANT -fPIC'
+ 		DBG=-g
+ 		KERN_DBG=-g
+ 		LWP_DBG=-g

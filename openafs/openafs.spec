@@ -12,6 +12,10 @@
 %ifarch x86_64
 %define sysname amd64_linux26
 %endif
+%ifarch aarch64
+%define sysname arm64_linux26
+%endif
+
 
 #%define pre pre1
 %define pre %nil
@@ -21,12 +25,15 @@
   %global _with_systemd 1
 %endif
 
+# Build with enable_kauth 
+# This is deprecated / obsolete in 1.8.X and should be disabled with 0
+%define enable_kauth    0
 
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.23
-Release:        1%{?pre}%{?dist}
+Version:        1.8.2
+Release:        4%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -50,32 +57,34 @@ Source20:       sysnames.sh
 Source21:       setcrypt.sh
 # SELinux module for the openafs server
 Source22:       openafs-server.te
+Source23:       openafs-client.te
 
 
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison
 BuildRequires:  automake, autoconf
 BuildRequires:  %{_bindir}/pod2man
-BuildRequires:  gcc
+BuildRequires:  libtool
 %if 0%{?_with_systemd}
 BuildRequires: systemd-units
 %endif
 
-Patch0:         openafs-1.6.0-fPIC.patch
-Patch1:         openafs-1.6.2-fPIC-1.patch
+Patch0:         openafs-1.8.0-fPIC.patch
 # systemd: Skip CellServDB manipulation
-Patch2:         openafs-1.6.20.2-systemd-no-cellservdb.patch
+Patch1:         openafs-1.6.20.2-systemd-no-cellservdb.patch
 # systemd: unload the proper kernel module
-Patch3:        openafs-1.6.6-systemd-kmod-name.patch
+Patch2:        openafs-1.6.6-systemd-kmod-name.patch
 # systemd: use FHS-style paths instead of transarc paths
-Patch4:        openafs-1.6.20.2-systemd-fhs.patch
+Patch3:        openafs-1.6.20.2-systemd-fhs.patch
 # systemd: add additional user-friendly environment vars
-Patch5:        openafs-1.6.20.2-systemd-env-vars.patch
+Patch4:        openafs-1.6.20.2-systemd-env-vars.patch
 # Add ExecPostStart "sysnames" helper script.
-Patch6:        openafs-1.6.20.2-systemd-execpoststart.patch
-Patch7:        gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
-Patch8:        openafs-1.6.22.2-replace-types-with-xdr.patch
-Patch10:       openafs-1.6.22.2-auristorfix.patch
+Patch5:        openafs-1.6.20.2-systemd-execpoststart.patch
+Patch6:        openafs-1.8.2-Linux-4.20-current_kernel_time-is-gone.patch
+Patch7:        openafs-1.8.2-Linux-4.20-do_settimeofday-is-gone.patch
+Patch8:        openafs-1.8.2-Linux-5-do_getofday-is-gone.patch
+Patch9:        openafs-1.8.2-Linux-5-ktime_get_coarse_real_ts64.patch
+Patch10:       openafs-1.8.2-Linux-5-super-block-flags-instead-of-mount-flags.patch
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -99,16 +108,14 @@ Requires(post): systemd
 Requires(post): chkconfig
 %endif
 #Requires:       %{name}-kmod  >= %{version}
-# Lets see if the next stanza will support both dkms and kmod type rpms...
-# For fedora, only support dkms option.
-%if 0%{?rhel:1}
-Requires:       openafs.ko
-%else
+# only support dkms option.
 Requires:       openafs-dkms = %{version}
 
-%endif
 Requires:       openafs = %{version}
 Provides:       %{name}-kmod-common = %{version}
+%if 0%{?fedora} >=28 || 0%{?rhel} >= 8
+Requires: selinux-policy-devel
+%endif
 
 %description client
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -148,7 +155,7 @@ Requires(preun): systemd
 Requires(postun): systemd
 Requires(post): systemd
 %endif
-%if 0%{?fedora} >=16 || 0%{?rhel} >= 7
+%if 0%{?fedora} >=28 || 0%{?rhel} >= 7
 Requires: selinux-policy-devel
 %endif
  
@@ -165,31 +172,28 @@ Cell.
 %setup -q -b 1 -n openafs-%{version}%{pre}
 
 # This changes osconf.m4 to build with -fPIC on i386 and x86_64
-%patch0
-%patch1
+%patch0 -p1 -b .fpic
+
 
 # systemd unit file changes for RPM Fusion
-%patch2 -p1 -b .cellservdb
-%patch3 -p1 -b .kmod
-%patch4 -p1 -b .fhs
-%patch5 -p1 -b .envvars
-%patch6 -p1 -b .execpoststart
+%patch1 -p1 -b .cellservdb
+%patch2 -p1 -b .kmod
+%patch3 -p1 -b .fhs
+%patch4 -p1 -b .envvars
+%patch5 -p1 -b .execpoststart
 
-%if 0%{?fedora:1}
-%patch7 -p1 -b .411fix
+%if 0%{?fedora} >= 28
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1 -b .5fix
+%patch9 -p1 -b .5fix2
+%patch10 -p1 -b .5fix3
 %endif
 
-%patch8 -p1 -b .replacetypeswithxdr
-%patch10 -p1 -b .auristorfix
-
 # Convert the licese to UTF-8
-mv src/LICENSE src/LICENSE~
-iconv -f ISO-8859-1 -t UTF8 src/LICENSE~ > src/LICENSE
-rm src/LICENSE~
-
-mv $RPM_SOURCE_DIR/CellServDB $RPM_SOURCE_DIR/CellServDB~
-iconv -f ISO-8859-1 -t UTF8 $RPM_SOURCE_DIR/CellServDB~ > $RPM_SOURCE_DIR/CellServDB
-rm -f $RPM_SOURCE_DIR/CellServDB~
+mv LICENSE LICENSE~
+iconv -f ISO-8859-1 -t UTF8 LICENSE~ > LICENSE
+rm LICENSE~
 
 %build
 
@@ -212,7 +216,11 @@ export KRB5_CONFIG="/usr/bin/krb5-config"
         --with-linux-kernel-headers=%{ksource_dir} \
         --disable-kernel-module \
         --disable-strip-binaries \
-        --enable-supergroups
+        --enable-supergroups \
+%if %{enable_kauth}
+        --enable-kauth \
+%endif
+        --enable-debug
 
     # Build is not SMP compliant
     make $RPM_OPT_FLGS all_nolibafs
@@ -274,21 +282,28 @@ install -m 755 src/vlserver/vlclient ${RPM_BUILD_ROOT}/usr/sbin/vlclient
 # Include selinux policy module
 mkdir -p ${RPM_BUILD_ROOT}/%{_datarootdir}/selinux/devel
 install -m 644 $RPM_SOURCE_DIR/openafs-server.te ${RPM_BUILD_ROOT}/%{_datarootdir}/selinux/devel/openafs-server.te
+install -m 644 $RPM_SOURCE_DIR/openafs-client.te ${RPM_BUILD_ROOT}/%{_datarootdir}/selinux/devel/openafs-client.te
 
-# Include kpasswd as kapasswd so I can change my admin tokens
+# Include kpasswd as kapasswd so users can change admin tokens
+
+%if %{enable_kauth}
 mv ${RPM_BUILD_ROOT}/usr/bin/kpasswd ${RPM_BUILD_ROOT}/usr/bin/kapasswd
+%endif
 
 # Rename /usr/bin/backup to not conflict with Coda 
 # (Filed upstream as RT #130621)
 mv ${RPM_BUILD_ROOT}/usr/sbin/backup ${RPM_BUILD_ROOT}/usr/sbin/afsbackup
 
 # Put the PAM modules in a sane place
-mkdir -p ${RPM_BUILD_ROOT}/%{_lib}/security
-mv ${RPM_BUILD_ROOT}%{_libdir}/pam_afs.krb.so.1 \
-    ${RPM_BUILD_ROOT}/%{_lib}/security/pam_afs.krb.so
-mv ${RPM_BUILD_ROOT}%{_libdir}/pam_afs.so.1 \
-    ${RPM_BUILD_ROOT}/%{_lib}/security/pam_afs.so
+# Note:  "--enable-kauth" is deprecated in 1.8.0+
 
+%if %{enable_kauth}
+mkdir -p ${RPM_BUILD_ROOT}/%{_lib}/security
+mv ${RPM_BUILD_ROOT}%{_libdir}/pam_afs.krb.so \
+    ${RPM_BUILD_ROOT}/%{_lib}/security/pam_afs.krb.so
+mv ${RPM_BUILD_ROOT}%{_libdir}/pam_afs.so \
+    ${RPM_BUILD_ROOT}/%{_lib}/security/pam_afs.so
+%endif
 # Remove utilities related to DCE
 rm -f ${RPM_BUILD_ROOT}/usr/bin/dlog
 rm -f ${RPM_BUILD_ROOT}/usr/bin/dpass
@@ -330,6 +345,12 @@ install -d -m 700 $RPM_BUILD_ROOT%{_localstatedir}/cache/openafs
 %if 0%{?_with_systemd}
   %systemd_post openafs-client.service
 %endif
+#Selinux policy needed on fedora and RHEL 7.
+%if 0%{?fedora} >=28 || 0%{?rhel} >= 8
+cd /usr/share/selinux/devel/
+/usr/bin/make ./openafs-client.pp >/dev/null 2>&1 || :
+/usr/sbin/semodule -i /usr/share/selinux/devel/openafs-client.pp >/dev/null 2>&1 || :
+%endif
 # if this is owned by the package, upgrades with afs running can't work
 if [ ! -d /afs ] ; then
         mkdir -m 700 /afs
@@ -342,7 +363,7 @@ exit 0
   %systemd_post openafs-server.service
 %endif
 #Selinux policy needed on fedora and RHEL 7.
-%if 0%{?fedora} >=15 || 0%{?rhel} >= 7
+%if 0%{?fedora} >=28 || 0%{?rhel} >= 7
 cd /usr/share/selinux/devel/
 /usr/bin/make ./openafs-server.pp >/dev/null 2>&1 || :
 /usr/sbin/semodule -i /usr/share/selinux/devel/openafs-server.pp >/dev/null 2>&1 || :
@@ -392,8 +413,7 @@ rm -fr $RPM_BUILD_ROOT
 %defattr(-, root, root, -)
 %dir %{_sysconfdir}/openafs
 %dir %{_libexecdir}/openafs
-%doc src/LICENSE README NEWS README.DEVEL README.GIT README.PTHREADED_UBIK
-%doc README.WARNINGS README-WINDOWS
+%doc LICENSE README NEWS README-WINDOWS
 %config(noreplace) %{_sysconfdir}/sysconfig/*
 %if 0%{?_with_systemd}
 # systemd files are in -client and -server subpackages
@@ -403,12 +423,14 @@ rm -fr $RPM_BUILD_ROOT
 %{_bindir}/aklog
 %{_bindir}/bos
 %{_bindir}/fs
+%if %{enable_kauth}
 %{_bindir}/klog
 %{_bindir}/klog.krb
-%{_bindir}/klog.krb5
 %{_bindir}/knfs
 %{_bindir}/kapasswd
 %{_bindir}/kpwvalid
+%endif
+%{_bindir}/klog.krb5
 %{_bindir}/livesys
 %{_bindir}/pts
 %{_bindir}/sys
@@ -426,12 +448,19 @@ rm -fr $RPM_BUILD_ROOT
 %{_sbindir}/fstrace
 %{_sbindir}/rxdebug
 %{_sbindir}/vos
+%if %{enable_kauth}
 %{_sbindir}/kas
+%endif
 %{_libdir}/libafsauthent.so.*
 %{_libdir}/libkopenafs.so.*
 %{_libdir}/libafsrpc.so.*
+%{_libdir}/libafshcrypto.so*
+%{_libdir}/librokenafs.so*
+%if %{enable_kauth}
 /%{_lib}/security/*.so
+%endif
 %{_mandir}/man1/*
+%{_mandir}/man3/*
 %{_mandir}/man5/*
 %{_mandir}/man8/*
 
@@ -450,6 +479,8 @@ rm -fr $RPM_BUILD_ROOT
 %{_bindir}/cmdebug
 %{_bindir}/xstat_cm_test
 %{_sbindir}/afsd
+%{_datarootdir}/selinux/devel/openafs-client.te
+
 
 %files server
 %defattr(-,root,root)
@@ -458,6 +489,7 @@ rm -fr $RPM_BUILD_ROOT
 %endif
 %{_bindir}/afsmonitor
 %{_bindir}/asetkey
+%{_bindir}/akeyconvert
 %{_bindir}/scout
 %{_bindir}/udebug
 %{_bindir}/xstat_fs_test
@@ -466,7 +498,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_libexecdir}/openafs/dasalvager
 %{_libexecdir}/openafs/davolserver
 %{_libexecdir}/openafs/fileserver
+%if %{enable_kauth}
 %{_libexecdir}/openafs/kaserver
+%endif
 %{_libexecdir}/openafs/ptserver
 %{_libexecdir}/openafs/salvager
 %{_libexecdir}/openafs/salvageserver
@@ -491,10 +525,12 @@ rm -fr $RPM_BUILD_ROOT
 %{_sbindir}/volinfo
 %{_sbindir}/volscan
 %{_sbindir}/bos_util
+%if %{enable_kauth}
 %{_sbindir}/kadb_check
 %{_sbindir}/ka-forwarder
 %{_sbindir}/kdb
 %{_sbindir}/kpwvalid
+%endif
 %{_sbindir}/rmtsysd
 %{_datarootdir}/selinux/devel/openafs-server.te
 
@@ -505,6 +541,7 @@ rm -fr $RPM_BUILD_ROOT
 %{_includedir}/afs
 %{_includedir}/rx
 %{_includedir}/*.h
+%{_includedir}/opr/*.h
 %{_sbindir}/vsys
 %{_libdir}/libafsauthent.so
 %{_libdir}/libafsrpc.so
@@ -514,19 +551,20 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Mon Mar 25 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-4
+- Fix for compile issues on fedora29 5.0 kernel.
 
-* Wed May 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.6.23-1
-- Update to 1.6.23
+* Fri Feb 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-3
+- Fixes for selinux issues on rhel 8 beta.
 
-* Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
-- Update to 1.6.22.3
+* Thu Feb 14 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-2
+- Fixes for aarch64 platform.
 
-* Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-4
-- add auristorfix patch from https://gerrit.openafs.org/#/c/13165/3
+* Tue Feb 12 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-1
+- Try to build newest version. 1.8.2
 
-* Wed Apr 4 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-3
-- Add newer CellServDB and convert fix for 
-  "invalid byte sequence in UTF-8" when puppet tries to modify it.
+* Sat Mar 10 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.8.0pre5-1
+- Try to build newest version. 1.8.X
 
 * Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
 - add rh75enotdir patch for rhel/centos 7.5.

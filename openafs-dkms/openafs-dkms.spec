@@ -15,33 +15,36 @@
 %ifarch x86_64
 %define sysname amd64_linux26
 %endif
+%ifarch aarch64
+%define sysname arm64_linux26
+%endif
 
 
-%define basearchs i386 alpha ia64 ppc s390 x86_64
+%define basearchs i386 ppc64 ppc64le s390 x86_64 aarch64
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.6.23
-Release:        1%{?dist}
+Version:        1.8.2
+Release:        4%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
-Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
-#Patch1:         openafs-1.6.22.2-rh75enotdir.patch
-Patch2:         openafs-1.6.22.2-auristorfix.patch
-
+Patch0:         openafs-1.8.2-Linux-4.20-current_kernel_time-is-gone.patch
+Patch1:         openafs-1.8.2-Linux-4.20-do_settimeofday-is-gone.patch
+Patch2:         openafs-1.8.2-Linux-5-do_getofday-is-gone.patch
+Patch3:         openafs-1.8.2-Linux-5-ktime_get_coarse_real_ts64.patch
+Patch4:         openafs-1.8.2-Linux-5-super-block-flags-instead-of-mount-flags.patch
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
-BuildRequires:  gcc
 %if 0%{?_with_systemd}
 BuildRequires: systemd-units
 %endif
+BuildRequires:  libtool
 Requires:       openafs-client = %{version}
 Requires:       dkms
 Requires:       elfutils-libelf-devel
 Requires:       kernel-devel
-Requires:       gcc
 Provides:       openafs.ko
 
 %description
@@ -55,11 +58,13 @@ This package provides the DKMS enabled kernel modules for AFS.
 %prep
 %setup -q -n %{module}-%{version}
 
-%if 0%{?fedora:1}
-%patch0 -p1 -b .411fix
+%if 0%{?fedora} >= 28
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1 -b .5fix
+%patch3 -p1 -b .5fix2
+%patch4 -p1 -b .5fix3
 %endif
-#%patch1 -p1 -b .rh75enotdir
-%patch2 -p1 -b .auristorfix
 
 %build
 
@@ -111,15 +116,20 @@ exit 0
 
 
 %changelog
-* Wed May 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.6.23-1
-- Update to 1.6.23
+* Mon Mar 25 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-4
+- Fix for compile issues on fedora29 5.0 kernel.
 
-* Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
-- Update to 1.6.22.3
-- add auristorfix patch from https://gerrit.openafs.org/#/c/13165/3
+* Fri Feb 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-3
+- Fixes for selinux issues on rhel 8 beta.
 
-* Wed Apr 4 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-3
-- Release bump for change in openafs package.
+* Thu Feb 14 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-2
+- Fixes for aarch64 platform.
+
+* Tue Feb 12 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-1
+- Try to build newest version. 1.8.2
+
+* Sat Mar 10 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.8.0pre5-1
+- Try to build newest version. 1.8.X
 
 * Fri Mar 2 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.2-2
 - add rh75enotdir patch for rhel/centos 7.5.
