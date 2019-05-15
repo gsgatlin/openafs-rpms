@@ -21,7 +21,7 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.6.22.3
+Version:        1.6.23
 Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
@@ -111,6 +111,9 @@ exit 0
 
 
 %changelog
+* Wed May 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.6.23-1
+- Update to 1.6.23
+
 * Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
 - Update to 1.6.22.3
 - add auristorfix patch from https://gerrit.openafs.org/#/c/13165/3

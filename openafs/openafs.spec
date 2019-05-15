@@ -25,7 +25,7 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.6.22.3
+Version:        1.6.23
 Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
@@ -514,6 +514,10 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+
+* Wed May 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.6.23-1
+- Update to 1.6.23
+
 * Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
 - Update to 1.6.22.3
 
