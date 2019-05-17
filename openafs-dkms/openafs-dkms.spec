@@ -28,8 +28,8 @@ Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
 Patch0:         gcc-7.0.1-STRUCT_GROUP_INFO_HAS_GID-always.patch
-#Patch1:         openafs-1.6.22.2-rh75enotdir.patch
-Patch2:         openafs-1.6.22.2-auristorfix.patch
+
+
 
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
@@ -58,8 +58,6 @@ This package provides the DKMS enabled kernel modules for AFS.
 %if 0%{?fedora:1}
 %patch0 -p1 -b .411fix
 %endif
-#%patch1 -p1 -b .rh75enotdir
-%patch2 -p1 -b .auristorfix
 
 %build
 
@@ -111,7 +109,7 @@ exit 0
 
 
 %changelog
-* Wed May 15 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.6.23-1
+* Fri May 17 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.6.23-1
 - Update to 1.6.23
 
 * Wed Aug 15 2018 Gary Gatling <gsgatlin@ncsu.edu> 1.6.22.3-1
