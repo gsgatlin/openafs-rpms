@@ -24,17 +24,17 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.8.2
-Release:        4%{?dist}
+Version:        1.8.3
+Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
-Patch0:         openafs-1.8.2-Linux-4.20-current_kernel_time-is-gone.patch
-Patch1:         openafs-1.8.2-Linux-4.20-do_settimeofday-is-gone.patch
-Patch2:         openafs-1.8.2-Linux-5-do_getofday-is-gone.patch
-Patch3:         openafs-1.8.2-Linux-5-ktime_get_coarse_real_ts64.patch
-Patch4:         openafs-1.8.2-Linux-5-super-block-flags-instead-of-mount-flags.patch
+#Patch0:         openafs-1.8.2-Linux-4.20-current_kernel_time-is-gone.patch
+#Patch1:         openafs-1.8.2-Linux-4.20-do_settimeofday-is-gone.patch
+#Patch2:         openafs-1.8.2-Linux-5-do_getofday-is-gone.patch
+#Patch3:         openafs-1.8.2-Linux-5-ktime_get_coarse_real_ts64.patch
+#Patch4:         openafs-1.8.2-Linux-5-super-block-flags-instead-of-mount-flags.patch
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
 %if 0%{?_with_systemd}
@@ -58,13 +58,13 @@ This package provides the DKMS enabled kernel modules for AFS.
 %prep
 %setup -q -n %{module}-%{version}
 
-%if 0%{?fedora} >= 28
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1 -b .5fix
-%patch3 -p1 -b .5fix2
-%patch4 -p1 -b .5fix3
-%endif
+#%if 0%{?fedora} >= 28
+#%patch0 -p1
+#%patch1 -p1
+#%patch2 -p1 -b .5fix
+#%patch3 -p1 -b .5fix2
+#%patch4 -p1 -b .5fix3
+#%endif
 
 %build
 
@@ -116,6 +116,9 @@ exit 0
 
 
 %changelog
+* Wed Aug 7 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.3-1
+- Try to build newest version. 1.8.3
+
 * Mon Mar 25 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.2-4
 - Fix for compile issues on fedora29 5.0 kernel.
 
