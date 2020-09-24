@@ -20,21 +20,25 @@
 %endif
 
 
+
 %define basearchs i386 ppc64 ppc64le s390 x86_64 aarch64
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.8.3
+Version:        1.8.6
 Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
+
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
-#Patch0:         openafs-1.8.2-Linux-4.20-current_kernel_time-is-gone.patch
-#Patch1:         openafs-1.8.2-Linux-4.20-do_settimeofday-is-gone.patch
-#Patch2:         openafs-1.8.2-Linux-5-do_getofday-is-gone.patch
-#Patch3:         openafs-1.8.2-Linux-5-ktime_get_coarse_real_ts64.patch
-#Patch4:         openafs-1.8.2-Linux-5-super-block-flags-instead-of-mount-flags.patch
+
+Patch0:        openafs-1.8.6-GCC-10.patch
+Patch1:        openafs-1.8.6-replace-kernel5.8_setsockopt-with-new-funcs.patch
+Patch2:        openafs-1.8.6-kernel5.8-do-not-set-name-field-in-backing_dev_info.patch
+Patch3:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
+
+
 BuildRoot:      %{_tmppath}/%{name}-root
 BuildRequires:  krb5-devel, pam-devel, ncurses-devel, flex, byacc, bison, automake, autoconf
 %if 0%{?_with_systemd}
@@ -58,13 +62,14 @@ This package provides the DKMS enabled kernel modules for AFS.
 %prep
 %setup -q -n %{module}-%{version}
 
-#%if 0%{?fedora} >= 28
-#%patch0 -p1
-#%patch1 -p1
-#%patch2 -p1 -b .5fix
-#%patch3 -p1 -b .5fix2
-#%patch4 -p1 -b .5fix3
-#%endif
+%if 0%{?fedora} >= 31
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
+%patch3 -p1
+%endif
+
+
 
 %build
 
@@ -79,6 +84,7 @@ rm -rf ${RPM_BUILD_ROOT}
 
 install -d -m 755 %{buildroot}%{_prefix}/src
 cp -a libafs_tree %{buildroot}%{_prefix}/src/%{module}-%{version}
+
 
 # Lifted from the Mandriva DKMS OpenAFS package
 # Modified in the extreme by gsgatlin, 2/23/2015.
@@ -96,17 +102,31 @@ AUTOINSTALL="yes"
 EOF
 
 %pre
+%if 0%{?fedora} >= 31
+dkms remove -m %{module} -v %{version} &>/dev/null
+%else
 dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all &>/dev/null
+%endif
 exit 0
 
 %post
+%if 0%{?fedora} >= 31
+dkms add -m %{module} -v %{version} &>/dev/null
+dkms build -m %{module} -v %{version} &>/dev/null
+dkms install -m %{module} -v %{version} &>/dev/null
+%else
 dkms add -m %{module} -v %{version} --rpm_safe_upgrade &>/dev/null
 dkms build -m %{module} -v %{version} --rpm_safe_upgrade &>/dev/null
 dkms install -m %{module} -v %{version} --rpm_safe_upgrade &>/dev/null
+%endif
 exit 0
 
 %preun
+%if 0%{?fedora} >= 31
+dkms remove -m %{module} -v %{version} &>/dev/null
+%else
 dkms remove -m %{module} -v %{version} --rpm_safe_upgrade --all &>/dev/null
+%endif
 exit 0
 %postun
 
@@ -116,6 +136,16 @@ exit 0
 
 
 %changelog
+* Thu Sep 24 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-1
+- Try to build newest version. 1.8.6
+- fix for dkms issues on fedora distro and fix for kernel 5.8
+
+* Sat Oct 26 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.5-1
+- Try to build newest version. 1.8.5
+
+* Thu Oct 17 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.4-1
+- Try to build newest version. 1.8.4
+
 * Wed Aug 7 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.3-1
 - Try to build newest version. 1.8.3
 

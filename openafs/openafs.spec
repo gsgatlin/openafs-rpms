@@ -17,7 +17,9 @@
 %endif
 
 
-#%define pre pre1
+
+
+#%define pre pre2
 %define pre %nil
 
 # Use systemd unit files on RHEL 7 and above.
@@ -32,7 +34,7 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.8.3
+Version:        1.8.6
 Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
@@ -80,11 +82,11 @@ Patch3:        openafs-1.6.20.2-systemd-fhs.patch
 Patch4:        openafs-1.6.20.2-systemd-env-vars.patch
 # Add ExecPostStart "sysnames" helper script.
 Patch5:        openafs-1.6.20.2-systemd-execpoststart.patch
-#Patch6:        openafs-1.8.2-Linux-4.20-current_kernel_time-is-gone.patch
-#Patch7:        openafs-1.8.2-Linux-4.20-do_settimeofday-is-gone.patch
-#Patch8:        openafs-1.8.2-Linux-5-do_getofday-is-gone.patch
-#Patch9:        openafs-1.8.2-Linux-5-ktime_get_coarse_real_ts64.patch
-#Patch10:       openafs-1.8.2-Linux-5-super-block-flags-instead-of-mount-flags.patch
+Patch6:        openafs-1.8.6-GCC-10.patch
+Patch7:        openafs-1.8.6-replace-kernel5.8_setsockopt-with-new-funcs.patch
+Patch8:        openafs-1.8.6-kernel5.8-do-not-set-name-field-in-backing_dev_info.patch
+Patch9:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
+
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -181,14 +183,14 @@ Cell.
 %patch3 -p1 -b .fhs
 %patch4 -p1 -b .envvars
 %patch5 -p1 -b .execpoststart
+%if 0%{?fedora} >= 31
+%patch6 -p1
+%patch7 -p1
+%patch8 -p1
+%patch9 -p1
+%endif
 
-#%if 0%{?fedora} >= 28
-#%patch6 -p1
-#%patch7 -p1
-#%patch8 -p1 -b .5fix
-#%patch9 -p1 -b .5fix2
-#%patch10 -p1 -b .5fix3
-#%endif
+
 
 # Convert the licese to UTF-8
 mv LICENSE LICENSE~
@@ -551,6 +553,16 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Thu Sep 24 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-1
+- Try to build newest version. 1.8.6
+- fix for dkms issues on fedora distro and fix for kernel 5.8
+
+* Sat Oct 26 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.5-1
+- Try to build newest version. 1.8.5
+
+* Thu Oct 17 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.4-1
+- Try to build newest version. 1.8.4
+
 * Wed Aug 7 2019 Gary Gatling <gsgatlin@ncsu.edu> 1.8.3-1
 - Try to build newest version. 1.8.3
 
