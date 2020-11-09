@@ -126,4 +126,8 @@ an example of arm complile:
 make el8aarch64
 ```
 
-We only support openafs i686 builds for CentOS 6.
+We only support openafs i686 builds for CentOS 6. If you have trouble building
+the openafs kernel module (libafs) on fedora or RHEL after a new kernel drops, 
+check the arch linux source packages for useful patches to add to keep everything 
+building all the time. Checking "rawhide" builds can catch this early.
+
