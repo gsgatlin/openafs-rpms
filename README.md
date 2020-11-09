@@ -58,17 +58,23 @@ For this repository the choices are: openafs or openafs-dkms
 
 Next type 
 
+```
 make
+```
 
 to build for all distros (EL6 EL7 EL8 and various fedora)
 
 type
 
+```
 make %dist
+```
 
 to build for a specific distro. Like:
 
+```
 make el8
+```
 
 for centos 8 / RHEL 8 for example.
 
@@ -99,6 +105,8 @@ server or within qemu emulator on x86_64. I have been using qemu since I do
 not have access to real ARM hardware that is powerful enough to build openafs. 
 an example of arm complile:
 
+```
 make el8aarch64
+```
 
 We only support openafs i686 builds for CentOS 6.
