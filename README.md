@@ -83,6 +83,12 @@ make el8
 
 for centos 8 / RHEL 8 for example.
 
+```
+make el6 el7 el8
+```
+
+would build binary rpms for CentOS 6/7/8 RHEL 6/7/8 in one command.
+
 Binary rpms and logs will be found in the "dist" subdirectory. This was made
 similar to how koji submits work.
 
