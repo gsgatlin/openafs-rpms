@@ -108,7 +108,7 @@ is dropped from support. The Makefile must also be edited whenever a new
 fedora release branches off of "rawhide." This usually happens a couple of 
 months before a new fedora release. At most you will have 4 fedoras going at
 one time right after a new release before the oldest version of fedora is
-retired. We use numbers in the Makfile now that mock provides a symlink to
+retired. We use numbers in the Makefile now that mock provides a symlink to
 "fedora-rawhide" within the mock package.
 
 There are some other targets in the makefile that are not included in 
@@ -119,7 +119,7 @@ fcXXaarch64
 el8aarch64
 ```
 
-These need to be build on a aarch64 architecture machine! Either a real ARM 
+These need to be built on a aarch64 architecture machine! Either a real ARM 
 server or within qemu emulator on x86_64. I have been using qemu since I do 
 not have access to real ARM hardware that is powerful enough to build openafs. 
 an example of arm complile:
