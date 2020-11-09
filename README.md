@@ -93,8 +93,7 @@ In the fedora distro, the %dist is called fcXX. Like Fedora 34 would have a
 %dist of fc34. "fc" once stood for "fedora core" and I think they just never 
 changed it.
 
-Binary rpms and logs will be found in the "dist" subdirectory. This was made
-similar to how koji submits work.
+Binary / source rpms and logs will be found in the "dist" subdirectory.
 
 The openafs-kmod package has been removed since it was not used and was 
 technically obsolete with fedora going in a different direction with
