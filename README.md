@@ -89,7 +89,7 @@ make el6 el7 el8
 
 would build binary rpms for CentOS 6/7/8 RHEL 6/7/8 in one command.
 
-In the feora distro, the %dist is called fcXX. Like Fedora 34 would have a 
+In the fedora distro, the %dist is called fcXX. Like Fedora 34 would have a 
 %dist of fc34. "fc" once stood for "fedora core" and I think they just never 
 changed it.
 
