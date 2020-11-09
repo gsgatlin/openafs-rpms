@@ -23,9 +23,11 @@ dnf groupinstall "Fedora Packager"
 
 Fedora:
 
+```
 dnf install @development-tools
 dnf install @rpm-development-tools
 dnf -y install fedora-packager rpm-sign createrepo_c
+```
 
 CentOS 7/6:
 
@@ -34,15 +36,19 @@ WARNING
 You will not be able to build for el8/fedora on el7 or el6 due
 to lack of "dnf" command on these distros.
 
+```
 yum install epel-release
 yum groupinstall "Development Tools"
 yum groupinstall "Fedora Packager"
+```
 
 All distros:
 
 make sure you run
 
+```
 usermod -a -G mock YOURACCOUNTNAME
+```
 
 once before you start.
 
