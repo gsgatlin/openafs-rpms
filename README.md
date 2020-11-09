@@ -4,7 +4,7 @@ These are some openafs rpms which have been used at NC State University.
 
 Originally the client/server packages came from rpmfusion. But the maintainer 
 could not work on them any longer. The openafs-dkms and openafs-kmod packages 
-came from the elrepo.org maintaner who also worked at NC. State University at 
+came from the elrepo.org maintaner who also worked at NC State University at 
 the time.
 
 
