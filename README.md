@@ -100,6 +100,8 @@ The openafs-kmod package has been removed since it was not used and was
 technically obsolete with fedora going in a different direction with
 pre packaged kernel modules such as akmods. We just chose to use dkms
 since it was working well on other distros like ubuntu and arch linux.
+Also the dkms based package already existed in a primitive form. (Mandriva 
+package)
 
 The Makefile needs to updated every time a new RHEL / CentOS is released or 
 is dropped from support. The Makefile must also be edited whenever a new 
