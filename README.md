@@ -14,10 +14,12 @@ CentOS 8:
 
 as root install various packages and groups before you start
 
+```
 dnf install epel-release
 dnf groupinstall "Development Tools"
 dnf groupinstall "RPM Development Tools"
 dnf groupinstall "Fedora Packager"
+```
 
 Fedora:
 
