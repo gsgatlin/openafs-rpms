@@ -97,8 +97,10 @@ retired. We use numbers in the Makfile now that mock provides a symlink to
 There are some other targets in the makefile that are not included in 
 target "all"
 
+```
 fcXXaarch64
 el8aarch64
+```
 
 These need to be build on a aarch64 architecture machine! Either a real ARM 
 server or within qemu emulator on x86_64. I have been using qemu since I do 
