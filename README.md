@@ -64,6 +64,11 @@ make
 
 to build for all distros (EL6 EL7 EL8 and various fedora)
 
+WARNING
+
+"make" or "make all" may take a long time due to the large number of distros 
+supported combined with the complexity of the openafs compile process.
+
 type
 
 ```
