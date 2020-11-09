@@ -1,6 +1,6 @@
 # openafs-rpms
 
-These are some openafs rpms which are used at NC State University.
+These are some openafs rpms which have been used at NC State University.
 
 Originally the client/server packages came from rpmfusion. But the maintainer 
 could not work on them any longer. The openafs-dkms and openafs-kmod packages 
@@ -10,19 +10,49 @@ the time.
 
 # Instructions
 
+CentOS 8:
+
+as root install various packages and groups before you start
+
+dnf install epel-release
+dnf groupinstall "Development Tools"
+dnf groupinstall "RPM Development Tools"
+dnf groupinstall "Fedora Packager"
+
+Fedora:
+
+dnf install @development-tools
+dnf install @rpm-development-tools
+dnf -y install fedora-packager rpm-sign createrepo_c
+
+CentOS 7/6:
+
+WARNING
+
+You will not be able to build for el8/fedora on el7 or el6 due
+to lack of "dnf" command on these distros.
+
+yum install epel-release
+yum groupinstall "Development Tools"
+yum groupinstall "Fedora Packager"
+
+All distros:
+
 make sure you run
 
 usermod -a -G mock YOURACCOUNTNAME
 
-before you start.
+once before you start.
 
 cd into the directory name of the rpm package name you wish to build for.
 
-type 
+For this repository the choices are: openafs or openafs-dkms
+
+Next type 
 
 make
 
-to build for all distros (EL6 EL7 and fedora)
+to build for all distros (EL6 EL7 EL8 and various fedora)
 
 type
 
@@ -30,11 +60,37 @@ make %dist
 
 to build for a specific distro. Like:
 
-make el7
+make el8
 
-for centos 7 for example.
+for centos 8 / RHEL 8 for example.
 
-The openafs-kmod package may only be built for centos or RHEL. To build it on
-fedora you would need many more mock configuration files to add the rpmfusion 
-yum repo to your build environment. We do not use kmods at NCSU on fedora.
+Binary rpms and logs will be found in the "dist" subdirectory. This was made
+similar to how koji submits work.
 
+The openafs-kmod package has been removed since it was not used and was 
+technically obsolete with fedora going in a different direction with
+pre packaged kernel modules such as akmods. We just chose to use dkms
+since it was working well on other distros like ubuntu and arch linux.
+
+The Makefile needs to updated every time a new RHEL / CentOS is released or 
+is dropped from support. The Makefile must also be edited whenever a new 
+fedora release branches off of "rawhide." This usually happens a couple of 
+months before a new fedora release. At most you will have 4 fedoras going at
+one time right after a new release before the oldest version of fedora is
+retired. We use numbers in the Makfile now that mock provides a symlink to
+"fedora-rawhide" within the mock package.
+
+There are some other targets in the makefile that are not included in 
+target "all"
+
+fcXXaarch64
+el8aarch64
+
+These need to be build on a aarch64 architecture machine! Either a real ARM 
+server or within qemu emulator on x86_64. I have been using qemu since I do 
+not have access to real ARM hardware that is powerful enough to build openafs. 
+an example of arm complile:
+
+make el8aarch64
+
+We only support openafs i686 builds for CentOS 6.
