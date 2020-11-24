@@ -37,6 +37,7 @@ Patch0:        openafs-1.8.6-GCC-10.patch
 Patch1:        openafs-1.8.6-replace-kernel5.8_setsockopt-with-new-funcs.patch
 Patch2:        openafs-1.8.6-kernel5.8-do-not-set-name-field-in-backing_dev_info.patch
 Patch3:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
+Patch4:        openafs-1.8.6-kernel5.9-Remove-HAVE_UNLOCKED_IOCTL-COMPAT_IOCTL.patch
 
 
 BuildRoot:      %{_tmppath}/%{name}-root
@@ -67,6 +68,7 @@ This package provides the DKMS enabled kernel modules for AFS.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 %endif
 
 
@@ -136,6 +138,9 @@ exit 0
 
 
 %changelog
+* Mon Nov 23 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
+- fix for kernel 5.9
+
 * Thu Sep 24 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-1
 - Try to build newest version. 1.8.6
 - fix for dkms issues on fedora distro and fix for kernel 5.8

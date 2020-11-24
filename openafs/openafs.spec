@@ -35,7 +35,7 @@
 Summary:        Enterprise Network File System
 Name:           openafs
 Version:        1.8.6
-Release:        1%{?pre}%{?dist}
+Release:        2%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -86,6 +86,7 @@ Patch6:        openafs-1.8.6-GCC-10.patch
 Patch7:        openafs-1.8.6-replace-kernel5.8_setsockopt-with-new-funcs.patch
 Patch8:        openafs-1.8.6-kernel5.8-do-not-set-name-field-in-backing_dev_info.patch
 Patch9:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
+Patch10:       openafs-1.8.6-kernel5.9-Remove-HAVE_UNLOCKED_IOCTL-COMPAT_IOCTL.patch
 
 
 %description
@@ -188,6 +189,7 @@ Cell.
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
+%patch10 -p1
 %endif
 
 
@@ -553,6 +555,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Mon Nov 23 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
+- fix for kernel 5.9
+
 * Thu Sep 24 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-1
 - Try to build newest version. 1.8.6
 - fix for dkms issues on fedora distro and fix for kernel 5.8
