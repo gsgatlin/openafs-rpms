@@ -1,9 +1,10 @@
-module openafs-client 1.1;
+module openafs-client 1.2;
 
 require {
         type sssd_t;
         type init_t;
         type session_dbusd_tmp_t;
+        type system_dbusd_var_run_t;
         type sssd_var_lib_t;
         type etc_t;
         type afs_t;
@@ -21,6 +22,7 @@ allow afs_t self:capability dac_override;
 allow afs_t sssd_t:unix_stream_socket connectto;
 allow afs_t sssd_var_lib_t:dir search;
 allow afs_t sssd_var_lib_t:sock_file write;
+allow afs_t system_dbusd_var_run_t:sock_file write;
 
 #============= init_t ==============
 allow init_t session_dbusd_tmp_t:dir read;

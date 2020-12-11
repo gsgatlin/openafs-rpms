@@ -555,8 +555,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
-* Mon Nov 23 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
+* Fri Dec 11 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
 - fix for kernel 5.9
+- fix selinux issues in fedora 33+
 
 * Thu Sep 24 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-1
 - Try to build newest version. 1.8.6
