@@ -138,7 +138,7 @@ exit 0
 
 
 %changelog
-* Mon Nov 23 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
+* Fri Dec 11 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
 - fix for kernel 5.9
 
 * Thu Sep 24 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-1
