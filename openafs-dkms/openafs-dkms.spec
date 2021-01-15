@@ -25,8 +25,8 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.8.6
-Release:        2%{?dist}
+Version:        1.8.7
+Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
@@ -138,6 +138,12 @@ exit 0
 
 
 %changelog
+* Thu Jan 14 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-1
+- Try to build newest version. 1.8.7
+- This release fixes a critical issue with the generation of Rx connection IDs
+  (CIDs) for Rx clients started after 14 Jan 2021 08:25:36 AM UTC (Unix epoch
+  time 0x60000000) 
+
 * Fri Dec 11 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
 - fix for kernel 5.9
 

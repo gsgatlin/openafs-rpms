@@ -34,8 +34,8 @@
 
 Summary:        Enterprise Network File System
 Name:           openafs
-Version:        1.8.6
-Release:        2%{?pre}%{?dist}
+Version:        1.8.7
+Release:        1%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -555,6 +555,12 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Thu Jan 14 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-1
+- Try to build newest version. 1.8.7
+- This release fixes a critical issue with the generation of Rx connection IDs
+  (CIDs) for Rx clients started after 14 Jan 2021 08:25:36 AM UTC (Unix epoch
+  time 0x60000000) 
+
 * Fri Dec 11 2020 Gary Gatling <gsgatlin@ncsu.edu> 1.8.6-2
 - fix for kernel 5.9
 - fix selinux issues in fedora 33+
