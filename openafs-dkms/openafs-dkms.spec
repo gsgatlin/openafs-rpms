@@ -26,7 +26,7 @@
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
 Version:        1.8.7
-Release:        1%{?dist}
+Release:        2%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
@@ -50,7 +50,6 @@ Requires:       openafs-client = %{version}
 Requires:       dkms
 Requires:       elfutils-libelf-devel
 Requires:       kernel-devel
-Provides:       openafs.ko
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
@@ -63,14 +62,13 @@ This package provides the DKMS enabled kernel modules for AFS.
 %prep
 %setup -q -n %{module}-%{version}
 
-%if 0%{?fedora} >= 31
+%if 0%{?fedora} >= 31 || 0%{?rhel} >= 7
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
 %endif
-
 
 
 %build
@@ -138,6 +136,9 @@ exit 0
 
 
 %changelog
+* Wed Mar 10 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-2
+- Apply all fedora 5.8/5.9/5.10 kernel patches to RHEL 8/7
+
 * Thu Jan 14 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-1
 - Try to build newest version. 1.8.7
 - This release fixes a critical issue with the generation of Rx connection IDs

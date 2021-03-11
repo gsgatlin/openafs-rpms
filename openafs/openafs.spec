@@ -35,7 +35,7 @@
 Summary:        Enterprise Network File System
 Name:           openafs
 Version:        1.8.7
-Release:        1%{?pre}%{?dist}
+Release:        2%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -184,7 +184,7 @@ Cell.
 %patch3 -p1 -b .fhs
 %patch4 -p1 -b .envvars
 %patch5 -p1 -b .execpoststart
-%if 0%{?fedora} >= 31
+%if 0%{?fedora} >= 31 || 0%{?rhel} >= 7
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
@@ -555,6 +555,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Wed Mar 10 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-2
+- Apply all fedora 5.8/5.9/5.10 kernel patches to RHEL 8/7
+
 * Thu Jan 14 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-1
 - Try to build newest version. 1.8.7
 - This release fixes a critical issue with the generation of Rx connection IDs
