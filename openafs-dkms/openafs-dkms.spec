@@ -50,6 +50,7 @@ Requires:       openafs-client = %{version}
 Requires:       dkms
 Requires:       elfutils-libelf-devel
 Requires:       kernel-devel
+Provides:       openafs.ko
 
 %description
 The AFS distributed filesystem.  AFS is a distributed filesystem
