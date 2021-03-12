@@ -24,27 +24,30 @@ fi
 cp -v ./dist/*el8.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/rhel8/SRPMS/
 cp -v ./dist/*el8.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/rhel8/x86_64/
 cp -v ./dist/*el8.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/rhel8/aarch64/
-cp -v ./dist/*fc29.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora29/SRPMS/
-cp -v ./dist/*fc29.i686.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora29/i686/
-cp -v ./dist/*fc29.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora29/x86_64/
-cp -v ./dist/*fc29.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora29/aarch64/
-cp -v ./dist/*fc30.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora30/SRPMS/
-cp -v ./dist/*fc30.i686.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora30/i686/
-cp -v ./dist/*fc30.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora30/x86_64/
-cp -v ./dist/*fc30.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora30/aarch64/
-cp -v ./dist/*fc31.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora31/SRPMS/
-cp -v ./dist/*fc31.i686.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora31/i686/
-cp -v ./dist/*fc31.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora31/x86_64/
-cp -v ./dist/*fc31.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora31/aarch64/
+cp -v ./dist/*fc32.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora32/SRPMS/
+cp -v ./dist/*fc32.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora32/x86_64/
+cp -v ./dist/*fc32.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora32/aarch64/
+cp -v ./dist/*fc33.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora33/SRPMS/
+cp -v ./dist/*fc33.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora33/x86_64/
+cp -v ./dist/*fc33.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora33/aarch64/
+cp -v ./dist/*fc34.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora34/SRPMS/
+cp -v ./dist/*fc34.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora34/x86_64/
+cp -v ./dist/*fc34.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora34/aarch64/
+cp -v ./dist/*fc35.src.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora35/SRPMS/
+cp -v ./dist/*fc35.x86_64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora35/x86_64/
+cp -v ./dist/*fc35.aarch64.rpm /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora35/aarch64/
 
 createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/rhel8/SRPMS/
 createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/rhel8/
-createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora29/SRPMS/
-createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora29/
-createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora30/SRPMS/
-createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora30/
-createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora31/SRPMS/
-createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora31/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora32/SRPMS/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora32/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora33/SRPMS/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora33/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora34/SRPMS/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora34/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora35/SRPMS/
+createrepo --update /afs/eos.ncsu.edu/engrwww/linux.itecs/redhat/public/openafs/fedora35/
+
 
 
 if [ -x /usr/bin/fs ]; then
