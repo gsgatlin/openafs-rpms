@@ -35,7 +35,7 @@
 Summary:        Enterprise Network File System
 Name:           openafs
 Version:        1.8.7
-Release:        2%{?pre}%{?dist}
+Release:        3%{?pre}%{?dist}
 License:        IBM
 Group:          System Environment/Daemons
 URL:            http://www.openafs.org
@@ -87,6 +87,8 @@ Patch7:        openafs-1.8.6-replace-kernel5.8_setsockopt-with-new-funcs.patch
 Patch8:        openafs-1.8.6-kernel5.8-do-not-set-name-field-in-backing_dev_info.patch
 Patch9:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
 Patch10:       openafs-1.8.6-kernel5.9-Remove-HAVE_UNLOCKED_IOCTL-COMPAT_IOCTL.patch
+Patch11:       openafs-1.8.7-kernel5.11-Refactor-test-for-32bit-compat.patch
+Patch12:       openafs-1.8.7-kernel5.11-Test-32bit-compat-with-in_compat_syscall.patch
 
 
 %description
@@ -184,13 +186,15 @@ Cell.
 %patch3 -p1 -b .fhs
 %patch4 -p1 -b .envvars
 %patch5 -p1 -b .execpoststart
-%if 0%{?fedora} >= 31 || 0%{?rhel} >= 7
+#%if 0%{?fedora} >= 31 || 0%{?rhel} >= 7
 %patch6 -p1
 %patch7 -p1
 %patch8 -p1
 %patch9 -p1
 %patch10 -p1
-%endif
+%patch11 -p1
+%patch12 -p1
+#%endif
 
 
 
@@ -555,6 +559,9 @@ rm -fr $RPM_BUILD_ROOT
 %{_datadir}/openafs/C/afszcm.cat
 
 %changelog
+* Thu Mar 18 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-3
+- Add kernel 5.11 patches from Arch Linux AUR
+
 * Wed Mar 10 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-2
 - Apply all fedora 5.8/5.9/5.10 kernel patches to RHEL 8/7
 
