@@ -26,7 +26,7 @@
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
 Version:        1.8.7
-Release:        3%{?dist}
+Release:        4%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
@@ -40,6 +40,8 @@ Patch3:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
 Patch4:        openafs-1.8.6-kernel5.9-Remove-HAVE_UNLOCKED_IOCTL-COMPAT_IOCTL.patch
 Patch5:        openafs-1.8.7-kernel5.11-Refactor-test-for-32bit-compat.patch
 Patch6:        openafs-1.8.7-kernel5.11-Test-32bit-compat-with-in_compat_syscall.patch
+Patch7:        openafs-1.8.7-kernel5.12-setattr_prepare.patch
+Patch8:        openafs-1.8.7-kernel5.12-Add-user_namespace-param-to-inode-ops.patch
 
 
 BuildRoot:      %{_tmppath}/%{name}-root
@@ -73,6 +75,8 @@ This package provides the DKMS enabled kernel modules for AFS.
 %patch4 -p1
 %patch5 -p1
 %patch6 -p1
+%patch7 -p1
+%patch8 -p1
 #%endif
 
 
@@ -149,6 +153,9 @@ exit 0
 
 
 %changelog
+* Tue May 11 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-4
+- Add kernel 5.12 patches from Arch Linux AUR
+
 * Thu Mar 18 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-3
 - Add kernel 5.11 patches from Arch Linux AUR
 - try to use dkms --rpm_safe_upgrade again on fedora
