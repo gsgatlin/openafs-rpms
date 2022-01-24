@@ -25,8 +25,8 @@
 
 Summary:        OpenAFS Enterprise Network File System
 Name:           %{module}-dkms
-Version:        1.8.7
-Release:        4%{?dist}
+Version:        1.8.8.1
+Release:        1%{?dist}
 License:        IBM Public License
 Group:          System Environment/Daemons
 URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downloads.html
@@ -34,14 +34,6 @@ URL:            http://oss.software.ibm.com/developerworks/opensource/afs/downlo
 Source0:        http://www.openafs.org/dl/openafs/%{version}/%{module}-%{version}-src.tar.bz2
 
 Patch0:        openafs-1.8.6-GCC-10.patch
-Patch1:        openafs-1.8.6-replace-kernel5.8_setsockopt-with-new-funcs.patch
-Patch2:        openafs-1.8.6-kernel5.8-do-not-set-name-field-in-backing_dev_info.patch
-Patch3:        openafs-1.8.6-kernel5.8-use-lru_cache_add.patch
-Patch4:        openafs-1.8.6-kernel5.9-Remove-HAVE_UNLOCKED_IOCTL-COMPAT_IOCTL.patch
-Patch5:        openafs-1.8.7-kernel5.11-Refactor-test-for-32bit-compat.patch
-Patch6:        openafs-1.8.7-kernel5.11-Test-32bit-compat-with-in_compat_syscall.patch
-Patch7:        openafs-1.8.7-kernel5.12-setattr_prepare.patch
-Patch8:        openafs-1.8.7-kernel5.12-Add-user_namespace-param-to-inode-ops.patch
 
 
 BuildRoot:      %{_tmppath}/%{name}-root
@@ -69,14 +61,14 @@ This package provides the DKMS enabled kernel modules for AFS.
 
 #%if 0%{?fedora} >= 31 || 0%{?rhel} >= 7
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
-%patch4 -p1
-%patch5 -p1
-%patch6 -p1
-%patch7 -p1
-%patch8 -p1
+#%patch1 -p1
+#%patch2 -p1
+#%patch3 -p1
+#%patch4 -p1
+#%patch5 -p1
+#%patch6 -p1
+#%patch7 -p1
+#%patch8 -p1
 #%endif
 
 
@@ -153,6 +145,9 @@ exit 0
 
 
 %changelog
+* Thu Jan 20 2022 Gary Gatling <gsgatlin@ncsu.edu> 1.8.8.1-1
+- Try to build newest version. 1.8.8.1
+
 * Tue May 11 2021 Gary Gatling <gsgatlin@ncsu.edu> 1.8.7-4
 - Add kernel 5.12 patches from Arch Linux AUR
 

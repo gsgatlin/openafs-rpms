@@ -1,14 +1,12 @@
-.PHONY: clean install all srpm fc32 fc33 fc34 fc35 el7 el8 fc32aarch64 fc33aarch64 fc34aarch64 fc35aarch64 el8aarch64
+.PHONY: clean install all srpm fc34 fc35 fc36 el7 el8 fc34aarch64 fc35aarch64 fc36aarch64 el8aarch64
 .SUFFIXES: .spec .rpm
 all: build *.src.rpm \
 dist/*.el7.x86_64.rpm dist/*.el8.x86_64.rpm \
-dist/*.fc32.x86_64.rpm dist/*.fc33.x86_64.rpm dist/*.fc34.x86_64.rpm \
-dist/*.fc35.x86_64.rpm
+dist/*.fc34.x86_64.rpm dist/*.fc35.x86_64.rpm dist/*.fc36.x86_64.rpm \
 
 allaarch64: build *.src.rpm \
-dist/*fc32.aarch64.rpm dist/*fc33.aarch64.rpm \
 dist/*fc34.aarch64.rpm dist/*fc35.aarch64.rpm \
-dist/*.el8.aarch64.rpm
+dist/*fc36.aarch64.rpm dist/*.el8.aarch64.rpm
 
 install:
 	@echo "Error: Cannot stage these rpms in this Makefile"
@@ -41,65 +39,53 @@ el7: dist/*.el7.x86_64.rpm
 
 dist/*.el7.x86_64.rpm: build *.src.rpm
 	@echo "Building el7 x86_64 Binary RPMs for mock..."
-	mock --verbose --yum --scrub=all --root=epel-7-x86_64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --yum --root=epel-7-x86_64 --resultdir=./dist --rebuild $(newsrpm)
 
 el8: dist/*.el8.x86_64.rpm
 
 dist/*.el8.x86_64.rpm: build *.src.rpm
 	@echo "Building el8 x86_64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=epel-8-x86_64 --resultdir=./dist --rebuild $(newsrpm)
-
-fc32: dist/*.fc32.x86_64.rpm
-
-dist/*.fc32.x86_64.rpm: build *.src.rpm 
-	@echo "Building fc32 x86_64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-32-x86_64 --resultdir=./dist --rebuild $(newsrpm)
-
-fc33: dist/*.fc33.x86_64.rpm
-
-dist/*.fc33.x86_64.rpm: build *.src.rpm 
-	@echo "Building fc33 x86_64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-33-x86_64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --dnf --root=epel-8-x86_64 --resultdir=./dist --rebuild $(newsrpm)
 
 fc34: dist/*.fc34.x86_64.rpm
 
 dist/*.fc34.x86_64.rpm: build *.src.rpm 
 	@echo "Building fc34 x86_64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-34-x86_64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --dnf --root=fedora-34-x86_64 --resultdir=./dist --rebuild $(newsrpm)
 
 fc35: dist/*.fc35.x86_64.rpm
 
 dist/*.fc35.x86_64.rpm: build *.src.rpm 
 	@echo "Building fc35 x86_64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-35-x86_64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --dnf --root=fedora-35-x86_64 --resultdir=./dist --rebuild $(newsrpm)
 
-fc32aarch64: dist/*fc32.aarch64.rpm
+fc36: dist/*.fc36.x86_64.rpm
 
-dist/*fc32.aarch64.rpm: build *.src.rpm 
-	@echo "Building fc32 aarch64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-32-aarch64 --resultdir=./dist --rebuild $(newsrpm)
-
-fc33aarch64: dist/*fc33.aarch64.rpm
-
-dist/*fc33.aarch64.rpm: build *.src.rpm 
-	@echo "Building fc33 aarch64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-33-aarch64 --resultdir=./dist --rebuild $(newsrpm)
+dist/*.fc36.x86_64.rpm: build *.src.rpm 
+	@echo "Building fc36 x86_64 Binary RPMs for mock..."
+	mock --verbose --dnf --root=fedora-36-x86_64 --resultdir=./dist --rebuild $(newsrpm)
 
 fc34aarch64: dist/*fc34.aarch64.rpm
 
 dist/*fc34.aarch64.rpm: build *.src.rpm 
 	@echo "Building fc34 aarch64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-34-aarch64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --dnf --root=fedora-34-aarch64 --resultdir=./dist --rebuild $(newsrpm)
 
 fc35aarch64: dist/*fc35.aarch64.rpm
 
 dist/*fc35.aarch64.rpm: build *.src.rpm 
 	@echo "Building fc35 aarch64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=fedora-35-aarch64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --dnf --root=fedora-35-aarch64 --resultdir=./dist --rebuild $(newsrpm)
+
+fc36aarch64: dist/*fc36.aarch64.rpm
+
+dist/*fc36.aarch64.rpm: build *.src.rpm 
+	@echo "Building fc36 aarch64 Binary RPMs for mock..."
+	mock --verbose --dnf --root=fedora-36-aarch64 --resultdir=./dist --rebuild $(newsrpm)
 
 el8aarch64: dist/*.el8.aarch64.rpm
 
 dist/*.el8.aarch64.rpm: build *.src.rpm
 	@echo "Building el8 aarch64 Binary RPMs for mock..."
-	mock --verbose --dnf --scrub=all --root=epel-8-aarch64 --resultdir=./dist --rebuild $(newsrpm)
+	mock --verbose --dnf --root=epel-8-aarch64 --resultdir=./dist --rebuild $(newsrpm)
 
